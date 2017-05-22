@@ -9,6 +9,11 @@
 include_recipe "yum"
 include_recipe "users"
 
+execute "update" do
+	command "yum update -y"
+	action :run
+end
+
 execute "enable-epel-repository" do
 	command "yum-config-manager --quiet --enable epel"
 	action :run
