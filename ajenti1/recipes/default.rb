@@ -33,16 +33,14 @@ end
 
 package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel","gcc-c++","fuse-devel","curl-devel","libxml2-devel","mailcap","automake","git"]
 
-if `pip install --upgrade pip | grep up-to-date`.empty?
-	execute "upgrade-pip" do
-		command "pip install --upgrade pip"
-		action :run
-	end
+python_execute 'upgrade pip' do
+	action :nothing
+	command "pip install --upgrade pip"
 end
 
-execute "pip-ajenti" do
-	command "/usr/local/bin/pip install ajenti"
-	action :run
+python_execute 'install ajenti' do
+	action :nothing
+	command "pip install ajenti"
 end
 
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm"]
