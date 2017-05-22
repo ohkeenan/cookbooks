@@ -24,10 +24,9 @@ execute "update" do
 	action :run
 end
 
-yum_repository "ajenti" do
-	name "Ajenti"
-	url "http://repo.ajenti.org/centos/"
-	action :add
+execute "install_ajenti_rpm" do
+	command "rpm -ivh http://repo.ajenti.org/ajenti-repo-1.0-1.noarch.rpm"
+	action :run
 end
 
 package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel","gcc-c++","fuse-devel","curl-devel","libxml2-devel","mailcap","automake","git"]
