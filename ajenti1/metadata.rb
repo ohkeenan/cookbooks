@@ -11,4 +11,5 @@ supports 'amazon'
 depends 'yum'
 depends 'yum-epel'
 depends 'users'
+depends 'poise-python'
 

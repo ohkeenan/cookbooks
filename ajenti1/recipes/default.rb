@@ -33,9 +33,11 @@ end
 
 package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel","gcc-c++","fuse-devel","curl-devel","libxml2-devel","mailcap","automake","git"]
 
-execute "upgrade-pip" do
-	command "pip install --upgrade pip"
-	action :run
+if `pip install --upgrade pip | grep up-to-date`.empty?
+	execute "upgrade-pip" do
+		command "pip install --upgrade pip"
+		action :run
+	end
 end
 
 execute "pip-ajenti" do
