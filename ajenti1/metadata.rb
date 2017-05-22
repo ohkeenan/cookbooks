@@ -8,7 +8,7 @@ version          '0.1.0'
 
 supports 'amazon'
 
-depends 'yum',              '~> 3.0'
+depends 'yum'
 depends 'yum-epel'
 depends 'users'
 
