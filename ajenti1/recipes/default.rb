@@ -24,11 +24,12 @@ execute "update" do
 	action :run
 end
 
-execute "install_ajenti_rpm" do
-	command "rpm -ivh http://repo.ajenti.org/ajenti-repo-1.0-1.noarch.rpm"
-	action :run
+unless `rpm -qa | grep "ajenti-repo-1.0-1.noarch"`.empty?
+	execute "install_ajenti_rpm" do
+		command "rpm -ivh http://repo.ajenti.org/ajenti-repo-1.0-1.noarch.rpm"
+		action :run
+	end
 end
-
 package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel","gcc-c++","fuse-devel","curl-devel","libxml2-devel","mailcap","automake","git"]
 
 execute "upgrade-pip" do
