@@ -69,6 +69,25 @@ def retrieve_s3_buckets(s3_data)
   buckets
 end
 
+class Bucket
+  attr_reader :name
+  attr_reader :path
+  attr_reader :instance_profile
+  attr_reader :user_bucket
+  def initialize bucket, node
+    if bucket.is_a? String
+      @name = bucket
+      @path = File.join(node['s3fs']['mount_root'], @name)
+    elsif bucket.is_a? Hash
+      @name = bucket['name']
+      @path = bucket['path']
+    else
+      @name = ""
+      @path = ""
+    end
+  end
+end
+
 buckets.each do |bucket|
   directory bucket[:path] do
     owner     "root"
