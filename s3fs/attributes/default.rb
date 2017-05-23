@@ -18,6 +18,17 @@ when "centos", "redhat"
 when "amazon"
   default["s3fs"]["packages"] = %w{gcc libstdc++-devel gcc-c++ curl-devel libxml2-devel openssl-devel mailcap make fuse fuse-devel}
   default["fuse"]["version"] ="2.9.2"
+	ruby_block "get iam profile" do
+    	block do
+        #tricky way to load this Chef::Mixin::ShellOut utilities
+        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)      
+        command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d \'",\''
+        command_out = shell_out(command)
+        node.set['iamprofile'] = command_out.stdout
+	end
+    action :create
+	end
+  curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d '",'
 when "debian", "ubuntu"
   default["s3fs"]["packages"] = %w{build-essential pkg-config libcurl4-openssl-dev libfuse-dev fuse-utils libfuse2 libxml2-dev mime-support}
   default["fuse"]["version"] = "2.8.7"
