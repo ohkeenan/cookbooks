@@ -7,7 +7,6 @@
 #
 
 include_recipe "yum"
-include_recipe "users"
 
 execute "update" do
 	command "yum update -y"
