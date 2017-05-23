@@ -45,6 +45,18 @@ end
 
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm"]
 
+package ["php70-mysqlnd","php70-fpm"]
+
+if `ls -l /etc/alternatives/php | grep 7`.empty?
+	execute 'configure php7' do
+	command "unlink /etc/alternatives/php"
+	command "unlink /etc/alternatives/php-fpm"
+	command "unlink /etc/alternatives/php-fpm-init"
+	command "ln -s /usr/bin/php7 /etc/alternatives/php && ln -s /usr/sbin/php-fpm-7.0 /etc/alternatives/php-fpm && ln -s /etc/rc.d/init.d/php-fpm-7.0 /etc/alternatives/php-fpm-init"
+	action :run
+	end
+end
+
 service 'ajenti' do
 	action [:enable, :start]
 end
