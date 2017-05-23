@@ -19,3 +19,9 @@ execute "download nextcloud" do
 	command "wget -qO- https://download.nextcloud.com/server/releases/nextcloud-12.0.0.tar.bz2 | tar xj -C /srv/"
 	not_if { ::Dir.exists?("/srv/nextcloud")}
 end
+
+execute "chown nextcloud" do
+	command "chown -R www-data:www-data /srv/nextcloud"
+	user "root"
+	action :nothing
+end

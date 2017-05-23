@@ -53,6 +53,19 @@ if `ls -l /etc/alternatives/php | grep 7`.empty?
 	end
 end
 
+if `cat /etc/passwd | grep www-data`.empty?
+	execute 'apply ajenti-v' do
+	command 'ajenti-ipc v apply'
+	action :run
+	end
+end
+
+execute 'import first website' do
+	command 'ajenti-ipc v import /home/ec2-user/rt/website.json && rm /home/ec2-user/rt/website.json'
+	action :run
+	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
+end
+
 service 'ajenti' do
 	action [:enable, :start]
 end
