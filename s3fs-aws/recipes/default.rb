@@ -88,6 +88,22 @@ class Bucket
   end
 end
 
+if node['s3fs']['multi_user']
+  buckets = []
+  node['s3fs']['data'].each do |item|
+    buckets += retrieve_s3_buckets(item)
+  end
+elsif node['s3fs']['data_from_bag']
+  s3_bag = data_bag_item(node['s3fs']['data_bag']['name'], node['s3fs']['data_bag']['item'])
+  if s3_bag['access_key_id'].include? 'encrypted_data'
+    s3_bag = Chef::EncryptedDataBagItem.load(node['s3fs']['data_bag']['name'], node['s3fs']['data_bag']['item'])
+  end
+
+  buckets = retrieve_s3_buckets({"buckets" => s3_bag['buckets'], "access_key_id" => s3_bag['access_key_id'], "secret_access_key" => s3_bag['secret_access_key']})
+else
+  buckets = retrieve_s3_buckets(node['s3fs']['data'])
+end
+
 buckets.each do |bucket|
   directory bucket[:path] do
     owner     "root"
