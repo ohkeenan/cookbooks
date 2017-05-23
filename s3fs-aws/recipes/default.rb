@@ -53,6 +53,22 @@ ruby_block "get user bucket" do
     action :create
 end
 
+def retrieve_s3_buckets(s3_data)
+  buckets = []
+
+  s3_data['buckets'].each do |bucket|
+    bucket = Bucket.new(bucket, node)
+    buckets << {
+      :name => bucket.name,
+      :path => bucket.path,
+      :access_key => ((s3_data.include?('access_key_id')) ? s3_data['access_key_id'] : ''),
+      :secret_key => ((s3_data.include?('secret_access_key')) ? s3_data['secret_access_key'] : '') 
+    }   
+  end 
+
+  buckets
+end
+
 buckets.each do |bucket|
   directory bucket[:path] do
     owner     "root"
