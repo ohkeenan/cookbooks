@@ -118,7 +118,7 @@ buckets.each do |bucket|
   mount bucket[:path] do
     device "s3fs##{bucket[:name]}"
     fstype "fuse"
-    options node['s3fs']['options','user_bucket','instance_profile'] #this will bork
+    options node['s3fs']['options','user_bucket','instance_profile']
     dump 0
     pass 0
     action [:mount, :enable]
