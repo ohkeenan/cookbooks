@@ -35,7 +35,7 @@ end
             Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
             command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d \'",\''
             command_out = shell_out(command)
-            node.set['instance_profile'] = command_out.stdout
+            node.default['instance_profile'] = command_out.stdout
         end
     action :create
     end 
@@ -45,7 +45,7 @@ end
             Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
             command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d \'",\' |md5sum'
             command_out = shell_out(command)
-            node.set['user_bucket'] = command_out.stdout
+            node.default['user_bucket'] = command_out.stdout
         end
     action :create
     end
