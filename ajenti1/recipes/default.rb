@@ -61,7 +61,7 @@ if `cat /etc/passwd | grep www-data`.empty?
 end
 
 execute 'import first website' do
-	command 'ajenti-ipc v import /home/ec2-user/rt/website.json && rm /home/ec2-user/rt/website.json'
+	command 'ajenti-ipc v import /home/ec2-user/rt/website.json && rm /home/ec2-user/rt/website.json && ajenti-ipc v apply'
 	action :run
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
