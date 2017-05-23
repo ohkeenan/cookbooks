@@ -59,6 +59,7 @@ if `cat /etc/passwd | grep www-data`.empty?
 	action :run
 	end
 end
+# Will fail here since directory probably isn't created yet at /srv/$DOMAIN
 
 execute 'import first website' do
 	command 'ajenti-ipc v import /home/ec2-user/rt/website.json && rm /home/ec2-user/rt/website.json && ajenti-ipc v apply'
