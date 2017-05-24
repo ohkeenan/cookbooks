@@ -10,7 +10,10 @@ end
 default["s3fs"]["mount_root"] = '/mnt'
 default["s3fs"]["multi_user"] = false
 default["s3fs"]["version"] = "1.79"
-default["s3fs"]["options"] = 'allow_other,use_cache=/tmp'
+default["s3fs"]["options"] = {
+	'allow_other,use_cache=/tmp,iam_role='
+	node['s3fs']['instance_profile']
+}
 
 default["s3fs"]["data_from_bag"] = false
 

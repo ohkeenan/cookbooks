@@ -114,13 +114,13 @@ buckets.each do |bucket|
       File.exists?(bucket[:path])
     end
   end
-		@tempipopt = ["iam_role=","node['s3fs']['instance_profile']"].join("")
-		@ipoptions = ["node['s3fs']['options']","node['s3fs']['tempipopt']"].join(",")
+		#@tempipopt = ["iam_role=","node['s3fs']['instance_profile']"].join("")
+		#@ipoptions = ["node['s3fs']['options']","node['s3fs']['tempipopt']"].join(",")
 
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}"
 			fstype "fuse"
-			options "iam_role=nw-rt-ahkeenan"
+			options node['s3fs']['options']
 			dump 0
 			pass 0
 			action [:mount, :enable]
