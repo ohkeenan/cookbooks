@@ -37,7 +37,7 @@ ruby_block "get iam role" do
     Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
     command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d \'",\''
     command_out = shell_out(command)
-    node.default['iam_role'] = command_out.stdout
+    node.default['instance_profile'] = command_out.stdout
     end
     action :create
 end 
@@ -120,7 +120,7 @@ buckets.each do |bucket|
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}/#{node[:user_bucket]}"
 			fstype "fuse"
-			options "iam_role=#{node[:iam_role]},#{node[:s3fs][:options]}"
+			options "iam_role=#{node[:instance_profile]},#{node[:s3fs][:options]}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
