@@ -120,7 +120,7 @@ buckets.each do |bucket|
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}"
 			fstype "fuse"
-			options node['s3fs']['ipoptions']
+			options @ipoptions
 			dump 0
 			pass 0
 			action [:mount, :enable]
