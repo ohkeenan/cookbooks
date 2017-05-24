@@ -34,6 +34,8 @@ end
 ruby_block "get iam role" do
 	block do
     node.default[:s3fs][:iam_role] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","`
+	iam_r = run_context.resource_collection.find(:file => "/tmp/some_file")
+	iam_r.content node[:test][:content]
     end
 end 
 
@@ -93,6 +95,9 @@ else
   buckets = retrieve_s3_buckets(node['s3fs']['data'])
 end
 
+ENV['iam_role'] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","`
+ENV['user_bucket'] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1`
+
 buckets.each do |bucket|
   directory bucket[:path] do
     owner     "root"
@@ -104,9 +109,9 @@ buckets.each do |bucket|
     end
   end
 		mount bucket[:path] do
-			device "s3fs##{bucket[:name]}:/users/#{node[:s3fs][:user_bucket]}"
+			device "s3fs##{bucket[:name]}:/users/#{ENV['user_bucket']}"
 			fstype "fuse"
-			options "#{node[:s3fs][:options]},iam_role=#{node[:s3fs][:iam_role]}"
+			options "#{node[:s3fs][:options]},iam_role=#{ENV['iam_role']}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
