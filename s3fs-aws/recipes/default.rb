@@ -114,9 +114,6 @@ buckets.each do |bucket|
       File.exists?(bucket[:path])
     end
   end
-		#@tempipopt = ["iam_role=","node['s3fs']['instance_profile']"].join("")
-		#@ipoptions = ["node['s3fs']['options']","node['s3fs']['tempipopt']"].join(",")
-
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}/#{node[:user_bucket]}"
 			fstype "fuse"
@@ -124,6 +121,6 @@ buckets.each do |bucket|
 			dump 0
 			pass 0
 			action [:mount, :enable]
-			not_if "grep -qs '#{bucket[:path]} ' /proc/mounts"
+			not_if "grep -qs '#{bucket[:path]}/#{node[:user_bucket]} ' /proc/mounts"
 		end
 end
