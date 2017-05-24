@@ -115,7 +115,7 @@ buckets.each do |bucket|
     end
   end
 end
-	if node['s3fs']['instance_profile'].empty
+	if node['s3fs']['instance_profile'].empty?
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}"
 			fstype "fuse"
