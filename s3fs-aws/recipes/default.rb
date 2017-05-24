@@ -81,8 +81,8 @@ else
   buckets = retrieve_s3_buckets(node['s3fs']['data'])
 end
 
-ENV['iam_role'] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","`
-ENV['user_bucket'] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1`
+iam_role = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","`
+user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1`
 
 buckets.each do |bucket|
   directory bucket[:path] do
@@ -95,9 +95,9 @@ buckets.each do |bucket|
     end
   end
 		mount bucket[:path] do
-			device "s3fs##{bucket[:name]}:/users/#{ENV['user_bucket']}"
+			device "s3fs##{bucket[:name]}:/users/#{user_bucket}"
 			fstype "fuse"
-			options "#{node[:s3fs][:options]},iam_role=#{ENV['iam_role']}"
+			options "#{node[:s3fs][:options]},iam_role=#{iam_role}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
