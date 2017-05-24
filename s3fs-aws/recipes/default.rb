@@ -84,6 +84,9 @@ end
 iam_role = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d '",'`
 user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d '",' |md5sum |cut -d " " -f1`
 
+safe_role = iam_role.gsub!(/\W+/, '')
+safe_bucket = user_bucket.gsub!(/\W+/, '')
+
 buckets.each do |bucket|
   directory bucket[:path] do
     owner     "root"
@@ -95,9 +98,9 @@ buckets.each do |bucket|
     end
   end
 		mount bucket[:path] do
-			device "s3fs##{bucket[:name]}:/users/#{user_bucket.gsub(/\n\r/, "")}"
+			device "s3fs##{bucket[:name]}:/users/#{safe_bucket.gsub(/\n\r/, "")}"
 			fstype "fuse"
-			options "#{node[:s3fs][:options]},iam_role=#{iam_role.gsub(/\n\r/, "")}"
+			options "#{node[:s3fs][:options]},iam_role=#{safe_role.gsub(/\n\r/, "")}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
