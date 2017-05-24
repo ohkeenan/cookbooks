@@ -34,8 +34,7 @@ end
 ruby_block "get iam role" do
 	block do
     node.default[:s3fs][:iam_role] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","`
-	iam_r = run_context.resource_collection.find(:file => "/tmp/some_file")
-	iam_r.content node[:test][:content]
+	iam_r.content node[:s3fs][:iam_role]
     end
 end 
 
