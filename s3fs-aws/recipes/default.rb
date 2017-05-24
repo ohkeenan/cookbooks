@@ -33,7 +33,7 @@ end
 
 ruby_block "get iam role" do
 	block do
-    node.default['iam_role'] = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","'
+    node.default[:s3fs][:iam_role] = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","'
     end
 end 
 
