@@ -46,7 +46,7 @@ ruby_block "get user bucket" do
     block do
         #tricky way to load this Chef::Mixin::ShellOut utilities
         Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-        command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d \'",\' |md5sum |cut -d ' ' -f1'
+        command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d \'",\' |md5sum |cut -d " " -f1'
         command_out = shell_out(command)
         node.default['user_bucket'] = command_out.stdout
     end
