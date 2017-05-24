@@ -115,9 +115,9 @@ buckets.each do |bucket|
     end
   end
 		mount bucket[:path] do
-			device "s3fs##{bucket[:name]}:/users/#{node[:user_bucket]}"
+			device "s3fs##{bucket[:name]}:/users/#{node[:s3fs][:user_bucket]}"
 			fstype "fuse"
-			options "#{node[:s3fs][:options]},iam_role=#{node[:instance_profile]}"
+			options "#{node[:s3fs][:options]},iam_role=#{node[:s3fs][:instance_profile]}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
