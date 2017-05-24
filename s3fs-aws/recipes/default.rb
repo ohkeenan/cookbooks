@@ -48,7 +48,7 @@ ruby_block "get user bucket" do
         Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
         command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1'
         command_out = shell_out(command)
-        node.default[:user_bucket] = command_out.stdout
+        node.default[:s3fs][:user_bucket] = command_out.stdout
     end
     action :create
 end
