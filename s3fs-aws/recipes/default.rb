@@ -81,8 +81,8 @@ else
   buckets = retrieve_s3_buckets(node['s3fs']['data'])
 end
 
-iam_role = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","`
-user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1`
+iam_role = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d '",'`
+user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d '",' |md5sum |cut -d " " -f1`
 
 buckets.each do |bucket|
   directory bucket[:path] do
