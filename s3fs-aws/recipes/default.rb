@@ -17,20 +17,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/s3fs-fuse-#{ node['s3fs']['versio
   	action :create_if_missing
 end
 
-if %w{centos redhat amazon}.include?(node['platform'])
-  template "/etc/ld.so.conf.d/s3fs.conf" do                                                                                                           
-    source "s3fs.conf.erb"
-    owner "root"
-    group "root"
-    mode 0644
-  end 
-
-  bash "ldconfig" do
-    code "ldconfig"
-    only_if { `ldconfig -v | grep fuse | wc -l` == 0 } 
-  end 
-end
-
 bash "install s3fs" do
   	cwd Chef::Config[:file_cache_path]
   	code "
@@ -119,7 +105,7 @@ else
 end
 
 buckets.each do |bucket|
-  directory bucket[:path] do
+  directory "#{bucket[:path]}/#{node[:user_bucket]}" do
     owner     "root"
     group     "root"
     mode      0777
