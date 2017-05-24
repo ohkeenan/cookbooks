@@ -31,19 +31,6 @@ bash "install s3fs" do
   	not_if { File.exists?("/usr/bin/s3fs") }
 end
 
-ruby_block "get iam role" do
-	block do
-    node.default[:s3fs][:iam_role] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","`
-	iam_r.content node[:s3fs][:iam_role]
-    end
-end 
-
-ruby_block 'get user_bucket' do
-   block do
-      node.default[:s3fs][:user_bucket] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1`
-   end
-end
-
 def retrieve_s3_buckets(s3_data)
   buckets = []
 
