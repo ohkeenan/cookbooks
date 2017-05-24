@@ -53,6 +53,9 @@ ruby_block "get user bucket" do
     action :create
 end
 
+	node.force_default[:s3fs][:instance_profile] = "nw-rt-ip-ahkeenan"
+	node.force_default[:s3fs][:user_bucket] = "59bf05d798d33d365dcf35dfc06b52b3"
+
 def retrieve_s3_buckets(s3_data)
   buckets = []
 
