@@ -114,7 +114,6 @@ buckets.each do |bucket|
       File.exists?(bucket[:path])
     end
   end
-end
 		@ipoptions = [ node['s3fs']['options'] , node['s3fs']['instance_profile'] ].join(",")
 
 		mount bucket[:path] do
@@ -126,4 +125,4 @@ end
 			action [:mount, :enable]
 			not_if "grep -qs '#{bucket[:path]} ' /proc/mounts"
 		end
-
+end
