@@ -121,6 +121,6 @@ buckets.each do |bucket|
 			dump 0
 			pass 0
 			action [:mount, :enable]
-			not_if "grep -qs '#{bucket[:path]}/#{node[:user_bucket]} ' /proc/mounts"
+			#not_if "grep -qs '#{bucket[:path]}/#{node[:user_bucket]} ' /proc/mounts"
 		end
 end
