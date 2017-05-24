@@ -33,28 +33,15 @@ end
 
 ruby_block "get iam role" do
 	block do
-    #tricky way to load this Chef::Mixin::ShellOut utilities
-    Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-    command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","'
-    command_out = shell_out(command)
-    node.force_default[:s3fs][:instance_profile] = command_out.stdout
+    node.default['iam_role'] = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","'
     end
-    action :create
 end 
 
-ruby_block "get user bucket" do
-    block do
-        #tricky way to load this Chef::Mixin::ShellOut utilities
-        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-        command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1'
-        command_out = shell_out(command)
-        node.force_default[:s3fs][:user_bucket] = command_out.stdout
-    end
-    action :create
+ruby_block 'get user_bucket' do
+   block do
+      node.default['user_bucket'] = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d "\"," |md5sum |cut -d " " -f1`
+   end
 end
-
-	node.force_default[:s3fs][:instance_profile] = "nw-rt-ip-ahkeenan"
-	node.force_default[:s3fs][:user_bucket] = "59bf05d798d33d365dcf35dfc06b52b3"
 
 def retrieve_s3_buckets(s3_data)
   buckets = []
@@ -75,8 +62,7 @@ end
 class Bucket
   attr_reader :name
   attr_reader :path
-  attr_reader :instance_profile
-  attr_reader :user_bucket
+
   def initialize bucket, node
     if bucket.is_a? String
       @name = bucket
@@ -120,7 +106,7 @@ buckets.each do |bucket|
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}:/users/#{node[:s3fs][:user_bucket]}"
 			fstype "fuse"
-			options "#{node[:s3fs][:options]},iam_role=#{node[:s3fs][:instance_profile]}"
+			options "#{node[:s3fs][:options]},iam_role=#{node[:s3fs][:iam_role]}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
