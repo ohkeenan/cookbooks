@@ -98,9 +98,9 @@ buckets.each do |bucket|
     end
   end
 		mount bucket[:path] do
-			device "s3fs##{bucket[:name]}:/users/#{safe_bucket.gsub(/\n\r/, "")}"
+			device "s3fs##{bucket[:name]}:/users/#{safe_bucket}"
 			fstype "fuse"
-			options "#{node[:s3fs][:options]},iam_role=#{safe_role.gsub(/\n\r/, "")}"
+			options "#{node[:s3fs][:options]},iam_role=#{safe_role}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
