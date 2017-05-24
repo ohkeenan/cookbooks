@@ -114,7 +114,7 @@ buckets.each do |bucket|
       File.exists?(bucket[:path])
     end
   end
-		@ipoptions = [ node['s3fs']['options'] , node['s3fs']['instance_profile'] ].join(",")
+		@ipoptions = [(node['s3fs']['options'],node['s3fs']['instance_profile'])].join(",")
 
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}"
