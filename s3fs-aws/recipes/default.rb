@@ -35,7 +35,7 @@ ruby_block "get iam role" do
 	block do
     #tricky way to load this Chef::Mixin::ShellOut utilities
     Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
-    command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d \'",\''
+    command = 'curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d "\","'
     command_out = shell_out(command)
     node['instance_profile'] = command_out.stdout
     end
