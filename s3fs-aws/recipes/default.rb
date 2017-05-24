@@ -120,7 +120,7 @@ buckets.each do |bucket|
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}"
 			fstype "fuse"
-			options @ipoptions
+			options "iam_role=nw-rt-ahkeenan"
 			dump 0
 			pass 0
 			action [:mount, :enable]
