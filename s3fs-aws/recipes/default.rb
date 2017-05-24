@@ -114,14 +114,26 @@ buckets.each do |bucket|
       File.exists?(bucket[:path])
     end
   end
+	if node['s3fs']['instance_profile'].empty
+		mount bucket[:path] do
+			device "s3fs##{bucket[:name]}"
+			fstype "fuse"
+			options node['s3fs']['options']
+			dump 0
+			pass 0
+			action [:mount, :enable]
+			not_if "grep -qs '#{bucket[:path]} ' /proc/mounts"
+		end
+	else
+		@ipoptions = [ node['s3fs']['options'] , node['s3fs']['instance_profile'] ].join(",")
+		mount bucket[:path] do
+			device "s3fs##{bucket[:name]}"
+			fstype "fuse"
+			options node['s3fs']['ipoptions']
+			dump 0
+			pass 0
+			action [:mount, :enable]
+			not_if "grep -qs '#{bucket[:path]} ' /proc/mounts"
+		end
+	end
 
-  mount bucket[:path] do
-    device "s3fs##{bucket[:name]}"
-    fstype "fuse"
-    options node['s3fs']['options']
-    dump 0
-    pass 0
-    action [:mount, :enable]
-    not_if "grep -qs '#{bucket[:path]} ' /proc/mounts"
-  end
-end
