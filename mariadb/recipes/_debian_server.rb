@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: mariadb
-# Recipe:: default
+# Recipe:: _debian_server
 #
 # Copyright 2014, blablacar.com
 #
@@ -43,4 +43,36 @@ else
   end
 end
 
-include_recipe "#{cookbook_name}::server"
+# To be sure that debconf is installed
+package 'debconf-utils' do
+  action :install
+end
+
+# Preseed Debian Package
+# (but test for resource, as it can be declared by apt recipe)
+begin
+  resources(directory: '/var/cache/local/preseeding')
+rescue Chef::Exceptions::ResourceNotFound
+  directory '/var/cache/local/preseeding' do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    recursive true
+  end
+end
+
+template '/var/cache/local/preseeding/mariadb-server.seed' do
+  source 'mariadb-server.seed.erb'
+  owner 'root'
+  group 'root'
+  mode '0600'
+  variables(package_name: 'mariadb-server')
+  notifies :run, 'execute[preseed mariadb-server]', :immediately
+  sensitive true
+end
+
+execute 'preseed mariadb-server' do
+  command '/usr/bin/debconf-set-selections ' \
+          '/var/cache/local/preseeding/mariadb-server.seed'
+  action :nothing
+end
