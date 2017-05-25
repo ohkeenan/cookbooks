@@ -21,6 +21,7 @@ end
 execute "chown nextcloud" do
 	command "chown -R www-data:www-data /srv/nextcloud"
 	action :run
+	only_if "ls -l /srv/nextcloud | grep -q www-data"
 end
 
 execute 'import first nextcloud' do
