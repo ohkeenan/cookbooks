@@ -153,7 +153,7 @@ buckets.each do |bucket|
   end
 
   mount bucket[:path] do
-    device "s3fs##{bucket[:name]}"
+    device "#{bucket[:name]}"
     fstype "fuse"
     options node['s3fs']['options']
     dump 0
