@@ -20,7 +20,6 @@ end
 
 execute "chown nextcloud" do
 	command "chown -R www-data:www-data /srv/nextcloud"
-	user "root"
 	action :run
 	not_if "cat /etc/passwd | grep www-data"
 end
