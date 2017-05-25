@@ -8,7 +8,7 @@
 
 include_recipe 'chef-vault'
 
-vault = chef_vault_item(:credentials, "#{ node['name'] }")
+vault = chef_vault_item(:credentials, node.name)
 
 execute "update" do
 	command "yum update -y"
