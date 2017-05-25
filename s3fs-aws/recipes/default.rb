@@ -84,11 +84,28 @@ end
 iam_role = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/`.strip
 user_bucket = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/ |awk -F- '{printf $3}' |md5sum |tr -cd '[[:alnum:]]'`.strip
 
+user 's3fs' do
+	uid '155'
+	gid '155'
+	system true
+end
+
+group 'www-data' do
+	action :modify
+	members ['www-data','ec2-user']
+	system true
+end
+
+group 's3fs' do
+	action :modify
+	members ['s3fs','www-data','ec2-user']
+end
+
 buckets.each do |bucket|
 	directory bucket[:path] do
-    	owner     "root"
-    	group     "root"
-    	mode      0777
+    	owner     "s3fs"
+    	group     "s3fs"
+    	mode      0775
     	recursive true
     	not_if do
      		File.exists?(bucket[:path])
