@@ -92,7 +92,7 @@ end
 
 user 's3fs' do
 	uid '155'
-	gid 's3fs'
+	group 's3fs'
 	system true
 end
 
@@ -120,7 +120,7 @@ buckets.each do |bucket|
 		mount bucket[:path] do
 			device "#{bucket[:name]}:/users/#{user_bucket}"
 			fstype "fuse.s3fs"
-			options "#{node[:s3fs][:options]},iam_role=#{iam_role}"
+			options "#{node[:s3fs][:options]},uid=155,gid=155,iam_role=#{iam_role}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
