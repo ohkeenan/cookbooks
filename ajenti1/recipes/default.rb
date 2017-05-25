@@ -27,7 +27,7 @@ end
 execute "install_ajenti_rpm" do
 	command "rpm -ivh http://repo.ajenti.org/ajenti-repo-1.0-1.noarch.rpm"
 	action :run
-	not_if "rpm -qa | grep ajenti-repo-1.0-1.noarch"
+	not_if "yum list | grep ajenti-repo"
 end
 
 package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel","gcc-c++","fuse-devel","curl-devel","libxml2-devel","mailcap","automake","git"]
