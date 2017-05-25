@@ -23,7 +23,7 @@ end
 execute "chown nextcloud" do
 	command "chown -R www-data:www-data /srv/nextcloud"
 	user "root"
-	action :nothing
+	action :nothing #fix to run only if it's not already owned?
 end
 
 execute 'import first nextcloud' do

@@ -34,12 +34,12 @@ package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel"
 
 python_execute 'upgrade pip' do
 	action :run
-	command "sudo pip install --upgrade pip"
+	command "pip install --upgrade pip"
 end
 
 python_execute 'install ajenti' do
 	action :run
-	command "sudo /usr/local/bin/pip install ajenti"
+	command "pip install ajenti"
 end
 
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm"]
