@@ -82,21 +82,21 @@ else
 end
 
 iam_role = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d '",'`
-user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -d '",' |md5sum |cut -d " " -f1`
+user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -cd '[[:alnum:]]' |md5sum |tr -cd '[[:alnum:]]'`
 
 safe_role = iam_role.strip
 safe_bucket = user_bucket.strip
 
 buckets.each do |bucket|
-  directory bucket[:path] do
-    owner     "root"
-    group     "root"
-    mode      0777
-    recursive true
-    not_if do
-      File.exists?(bucket[:path])
-    end
-  end
+	directory bucket[:path] do
+    	owner     "root"
+    	group     "root"
+    	mode      0777
+    	recursive true
+    	not_if do
+     		File.exists?(bucket[:path])
+    	end
+  	end
 		mount bucket[:path] do
 			device "s3fs##{bucket[:name]}:/users/#{safe_bucket}"
 			fstype "fuse.s3fs"
