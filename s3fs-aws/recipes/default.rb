@@ -92,7 +92,7 @@ end
 
 user 's3fs' do
 	uid '155'
-	gid '155'
+	gid 's3fs'
 	system true
 end
 
