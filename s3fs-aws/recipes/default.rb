@@ -81,7 +81,7 @@ else
   buckets = retrieve_s3_buckets(node['s3fs']['data'])
 end
 
-iam_role = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d/ -f2 | tr -d '",'`
+iam_role = `curl http://169.254.169.254/latest/meta-data/iam/security-credentials/`
 user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -cd '[[:alnum:]]' |md5sum |tr -cd '[[:alnum:]]'`
 
 safe_role = iam_role.strip
