@@ -24,11 +24,10 @@ execute "update" do
 	action :run
 end
 
-if `rpm -qa | grep "ajenti-repo-1.0-1.noarch"`.empty?
-	execute "install_ajenti_rpm" do
-		command "rpm -ivh http://repo.ajenti.org/ajenti-repo-1.0-1.noarch.rpm"
-		action :run
-	end
+execute "install_ajenti_rpm" do
+	command "rpm -ivh http://repo.ajenti.org/ajenti-repo-1.0-1.noarch.rpm"
+	action :run
+	not_if "rpm -qa | grep ajenti-repo-1.0-1.noarch"
 end
 
 package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel","gcc-c++","fuse-devel","curl-devel","libxml2-devel","mailcap","automake","git"]
@@ -41,6 +40,7 @@ end
 python_execute 'install ajenti' do
 	action :run
 	command "-m pip install ajenti"
+	not_if { ::File.exists?('/usr/bin/ajenti-panel')}
 end
 
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm","php70-mysqlnd","php70-fpm"]
