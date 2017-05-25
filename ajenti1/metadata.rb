@@ -9,5 +9,6 @@ version          '0.1.0'
 supports 'amazon'
 
 depends 'chef-vault'
-depends 'database'
+depends 'mysql'
+depends 'mysql2_chef_gem'
 depends 'poise-python'
