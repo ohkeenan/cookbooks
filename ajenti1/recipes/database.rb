@@ -6,7 +6,8 @@
 #
 #
 
-include_recipe 'database'
+include_recipe 'mysql'
+include_recipe 'mysql2_chef_gem'
 include_recipe 'chef-vault'
 
 vault = chef_vault_item(:credentials, node.name)
