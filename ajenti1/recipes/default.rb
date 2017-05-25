@@ -6,23 +6,18 @@
 #
 #
 
-include_recipe "yum-epel"
+#include_recipe "yum"
 
 #execute "update" do
 #	command "yum update -y"
 #	action :run
 #end
 
-yum_repository 'epel' do
-    enabled true
-    gpgcheck true
-    gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL'
-end
 
-#execute "enable-epel-repository" do
-#	command "yum-config-manager --quiet --enable epel"
-#	action :run
-#end
+execute "enable-epel-repository" do
+	command "yum-config-manager --quiet --enable epel"
+	action :run
+end
 
 execute "update" do
 	command "yum update -y"
