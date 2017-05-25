@@ -34,10 +34,12 @@ end
 directory '/srv/nextcloud/data' do
 	action :delete
 	not_if { ::File.symlink?('/srv/nextcloud/data')}
+	only_if { ::Dir.exists?('/mnt/nw-rt/data')}
 end
 
 link '/srv/nextcloud/data' do
 	to '/mnt/nw-rt/data'
 	link_type :symbolic
 	not_if { ::File.symlink?('/srv/nextcloud/data')}
+	only_if { ::Dir.exists?('/mnt/nw-rt/data')}
 end
