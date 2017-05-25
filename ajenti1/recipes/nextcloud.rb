@@ -21,7 +21,6 @@ end
 execute "chown nextcloud" do
 	command "chown -R www-data:www-data /srv/nextcloud"
 	action :run
-	not_if "cat /etc/passwd | grep www-data"
 end
 
 execute 'import first nextcloud' do
