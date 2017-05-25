@@ -97,13 +97,13 @@ user 's3fs' do
 end
 
 group 'www-data' do
-	action :modify
+	action :manage
 	members ['www-data','ec2-user']
 	system true
 end
 
 group 's3fs' do
-	action :modify
+	action :manage
 	members ['s3fs','www-data','ec2-user']
 end
 
