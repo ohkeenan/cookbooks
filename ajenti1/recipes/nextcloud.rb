@@ -6,8 +6,6 @@
 #
 #
 
-include_recipe "yum"
-
 execute "update" do
 	command "yum update -y"
 	action :run
@@ -23,11 +21,23 @@ end
 execute "chown nextcloud" do
 	command "chown -R www-data:www-data /srv/nextcloud"
 	user "root"
-	action :nothing #fix to run only if it's not already owned?
+	action :run
+	not_if "cat /etc/passwd | grep www-data"
 end
 
 execute 'import first nextcloud' do
     command 'ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && rm /home/ec2-user/rt/nextcloud.json && ajenti-ipc v apply'
     action :run
     only_if { ::File.exists?('/home/ec2-user/rt/nextcloud.json')}                                                                           
+end
+
+directory '/srv/nextcloud/data' do
+	action :delete
+	not_if { ::File.symlink?('/srv/nextcloud/data')}
+end
+
+link '/srv/nextcloud/data' do
+	to '/mnt/nw-rt/data'
+	link_type :symbolic
+	not_if { ::File.symlink?('/srv/nextcloud/data')}
 end
