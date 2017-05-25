@@ -39,7 +39,7 @@ end
 
 python_execute 'install ajenti' do
 	action :nothing
-	command "pip install ajenti"
+	command "/usr/local/bin/pip install ajenti"
 end
 
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm"]
