@@ -6,17 +6,23 @@
 #
 #
 
-include_recipe "yum"
+include_recipe "yum-epel"
 
-execute "update" do
-	command "yum update -y"
-	action :run
+#execute "update" do
+#	command "yum update -y"
+#	action :run
+#end
+
+yum_repository 'epel' do
+    enabled true
+    gpgcheck true
+    gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL'
 end
 
-execute "enable-epel-repository" do
-	command "yum-config-manager --quiet --enable epel"
-	action :run
-end
+#execute "enable-epel-repository" do
+#	command "yum-config-manager --quiet --enable epel"
+#	action :run
+#end
 
 execute "update" do
 	command "yum update -y"
@@ -42,9 +48,7 @@ python_execute 'install ajenti' do
 	command "-m pip install ajenti"
 end
 
-package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm"]
-
-package ["php70-mysqlnd","php70-fpm"]
+package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm","php70-mysqlnd","php70-fpm"]
 
 if `ls -l /etc/alternatives/php | grep 7`.empty?
 	execute 'configure php7' do
