@@ -81,11 +81,8 @@ else
   buckets = retrieve_s3_buckets(node['s3fs']['data'])
 end
 
-iam_role = `curl http://169.254.169.254/latest/meta-data/iam/security-credentials/`
-user_bucket = `curl http://169.254.169.254/latest/meta-data/iam/info --silent | grep instance-profile | cut -d- -f5 | tr -cd '[[:alnum:]]' |md5sum |tr -cd '[[:alnum:]]'`
-
-safe_role = iam_role.strip
-safe_bucket = user_bucket.strip
+iam_role = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/`.strip
+user_bucket = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/ |awk -F- '{printf $3}' |md5sum |tr -cd '[[:alnum:]]'`.strip
 
 buckets.each do |bucket|
 	directory bucket[:path] do
@@ -98,12 +95,12 @@ buckets.each do |bucket|
     	end
   	end
 		mount bucket[:path] do
-			device "#{bucket[:name]}:/users/#{safe_bucket}"
+			device "#{bucket[:name]}:/users/#{user_bucket}"
 			fstype "fuse.s3fs"
-			options "#{node[:s3fs][:options]},iam_role=#{safe_role}"
+			options "#{node[:s3fs][:options]},iam_role=#{iam_role}"
 			dump 0
 			pass 0
 			action [:mount, :enable]
-			#not_if "grep -qs '#{bucket[:path]}/#{node[:user_bucket]} ' /proc/mounts"
+			not_if "grep -qs '#{bucket[:path]} ' /proc/mounts"
 		end
 end
