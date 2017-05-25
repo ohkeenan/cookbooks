@@ -6,7 +6,7 @@
 #
 #
 
-execute "enable-epel-repository" do
+execute "enable epel repository" do
 	command "yum-config-manager --quiet --enable epel"
 	action :run
 	not_if "yum repolist | grep epel"

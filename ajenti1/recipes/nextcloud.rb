@@ -6,6 +6,10 @@
 #
 #
 
+include_recipe 'chef-vault'
+
+vault = chef_vault_item(:credentials, "#{node[:name]}")
+
 execute "update" do
 	command "yum update -y"
 	action :run
@@ -27,7 +31,7 @@ end
 execute 'import first nextcloud' do
     command 'ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && rm /home/ec2-user/rt/nextcloud.json && ajenti-ipc v apply'
     action :run
-    only_if { ::File.exists?('/home/ec2-user/rt/nextcloud.json')}                                                                           
+    only_if { ::File.exists?('/home/ec2-user/rt/nextcloud.json')}
 end
 
 directory '/srv/nextcloud/data' do
