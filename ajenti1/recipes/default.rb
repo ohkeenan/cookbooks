@@ -33,12 +33,12 @@ end
 package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel","gcc-c++","fuse-devel","curl-devel","libxml2-devel","mailcap","automake","git"]
 
 python_execute 'upgrade pip' do
-	action :nothing
+	action :run
 	command "pip install --upgrade pip"
 end
 
 python_execute 'install ajenti' do
-	action :nothing
+	action :run
 	command "/usr/local/bin/pip install ajenti"
 end
 
