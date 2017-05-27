@@ -6,9 +6,11 @@
 #
 #
 
-include_recipe 'mysql'
-include_recipe 'mysql2_chef_gem'
 include_recipe 'chef-vault'
+
+mysql2_chef_gem 'default' do
+  action :install
+end
 
 vault = chef_vault_item(:credentials, node.name)
 
