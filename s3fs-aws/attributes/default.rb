@@ -16,5 +16,5 @@ default["s3fs"]["data_from_bag"] = false
 
 
 default["s3fs"]["data"] = {
-  "buckets" =>  ["nw-rt"]
+  "buckets" =>  [""]
 }
