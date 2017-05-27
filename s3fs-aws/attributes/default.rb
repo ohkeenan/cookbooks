@@ -1,4 +1,4 @@
-default["s3fs"]["build_from_source"] = true                                                                                                           
+#default["s3fs"]["build_from_source"] = true
 
 case node["platform"]
 
@@ -14,6 +14,7 @@ default["s3fs"]["options"] = '_netdev,allow_other,use_cache=/tmp'
 
 default["s3fs"]["data_from_bag"] = false
 
+
 default["s3fs"]["data"] = {
   "buckets" =>  ["nw-rt"]
-}      
+}

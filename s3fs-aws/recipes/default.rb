@@ -6,13 +6,16 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe 'chef-vault'
+vault = chef_vault_item(:credentials, node.name)
+
 
 node['s3fs']['packages'].each do |pkg|
-  package pkg 
+  package pkg
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/s3fs-fuse-#{ node['s3fs']['version'] }.tar.gz" do
-  	source "https://github.com/s3fs-fuse/s3fs-fuse/archive/v#{ node['s3fs']['version'] }.tar.gz"                                                        
+  	source "https://github.com/s3fs-fuse/s3fs-fuse/archive/v#{ node['s3fs']['version'] }.tar.gz"
   	mode 0644
   	action :create_if_missing
 end
@@ -40,9 +43,9 @@ def retrieve_s3_buckets(s3_data)
       :name => bucket.name,
       :path => bucket.path,
       :access_key => ((s3_data.include?('access_key_id')) ? s3_data['access_key_id'] : ''),
-      :secret_key => ((s3_data.include?('secret_access_key')) ? s3_data['secret_access_key'] : '') 
-    }   
-  end 
+      :secret_key => ((s3_data.include?('secret_access_key')) ? s3_data['secret_access_key'] : '')
+    }
+  end
 
   buckets
 end
@@ -78,7 +81,11 @@ elsif node['s3fs']['data_from_bag']
 
   buckets = retrieve_s3_buckets({"buckets" => s3_bag['buckets'], "access_key_id" => s3_bag['access_key_id'], "secret_access_key" => s3_bag['secret_access_key']})
 else
-  buckets = retrieve_s3_buckets(node['s3fs']['data'])
+  if ChefVault::Item.vault?(:credentials, :bucket)
+    buckets = ChefVault::Item.load(:credentials, :bucket)
+  else
+    buckets = retrieve_s3_buckets(node['s3fs']['data'])
+  end
 end
 
 iam_role = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/`.strip
