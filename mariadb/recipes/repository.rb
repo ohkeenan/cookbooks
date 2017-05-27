@@ -27,7 +27,7 @@ if node['mariadb']['use_default_repository']
     target_platform = if node['platform'] == 'redhat' || node['platform'] == 'scientific'
                         "rhel#{node['platform_version'].to_i}"
 					  elsif node['platform'] == 'amazon'
-						  "centos6"
+						  node.override['platform_version'] = "centos6"
 					  else
                         "#{node['platform']}#{node['platform_version'].to_i}"
                       end
