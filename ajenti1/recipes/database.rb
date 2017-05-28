@@ -11,7 +11,7 @@ include_recipe 'chef-vault'
 vault = chef_vault_item(node[:s3fs][:vault],node.name)
 
 mysql_connection_info = {
-  :host       => '127.0.0.1',
+  :host       => 'localhost',
   :username   => 'root',
   :password   => vault['sql_root']
 }
@@ -25,7 +25,7 @@ mysql_database_user 'nextcloud' do
   connection mysql_connection_info
   password vault['sql_nextcloud']
   database_name 'nextcloud'
-  host '127.0.0.1'
+  host 'localhost'
   privileges [:all]
   action [:create, :grant]
 end
