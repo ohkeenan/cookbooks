@@ -22,13 +22,35 @@ node.default['sql_nextcloud']['password'] = vault['sql_nextcloud']
   #:username => 'root'
   #:password => '' #node['sql_root']['password']
 #}
+mysql_connection_info = {
+  :host       => '127.0.0.1'
+  :username   => 'root'
+}
+
+mysql_database 'secure_installation' do
+  connection mysql_connection_info
+  database_name 'mysql'
+  sql <<-EOSQL
+  UPDATE mysql.user SET Password=PASSWORD('#{vault['sql_root']}') WHERE user = 'root';
+  DELETE FROM mysql.user WHERE USER LIKE '';
+  DELETE FROM mysql.user WHERE user = 'root' and host NOT IN ('127.0.0.1', 'localhost');
+  FLUSH PRIVILEGES;
+  DELETE FROM mysql.db WHERE db LIKE 'test%';
+  DROP DATABASE IF EXISTS test ;
+  EOSQL
+  action :query
+  only_if 'mysql -e "SHOW DATABASES"'
+end
+
+end
+mysql_database_user 'nextcloud' do
+  connection mysql_connection_info
+  password node['sql_nextcloud']['password']
+  action :create
+end
 
 mysql_database 'nextcloud' do
-  connection(
-    :host     => '127.0.0.1',
-    :username => 'root'
-    #:password => node['sql_nextcloud']['password']
-  )
+  connection mysql_connection_info
   action :create
 end
 
