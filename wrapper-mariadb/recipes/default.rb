@@ -47,7 +47,7 @@ end
 
 mysql_database 'secure_installation_drop_test' do
   connection mysql_connection_info
-  database_name 'test'
+  database_name 'mysql'
   sql 'DROP DATABASE IF EXISTS test;'
   action :query
   only_if 'mysql -e "SHOW DATABASES"'
