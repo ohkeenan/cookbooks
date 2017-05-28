@@ -8,7 +8,7 @@
 #
 
 include_recipe 'chef-vault'
-vault = chef_vault_item(:credentials, node.name)
+vault = chef_vault_item(node[:s3fs][:vault], node.name)
 
 if node[:platform] == 'amazon'
   yum_repository 'mariadb' do
