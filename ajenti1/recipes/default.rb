@@ -51,7 +51,7 @@ end
 execute 'apply ajenti-v' do
 	command 'ajenti-ipc v apply'
 	action :run
-	only_if "cat /etc/passwd | grep www-data"
+	not_if "cat /etc/passwd | grep www-data"
 end
 
 execute 'import first website' do
