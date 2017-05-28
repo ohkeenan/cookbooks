@@ -26,7 +26,6 @@ mysql_database_user 'nextcloud' do
   password vault['sql_nextcloud']
   database_name 'nextcloud'
   host 'localhost'
-  privileges [:select,:update,:insert]
   action [:create, :grant]
 end
 
@@ -34,7 +33,7 @@ execute 'install nextcloud' do
 	command "php /srv/nextcloud/occ maintenance:install --database mysql \
 	        --database-name nextcloud \
 	        --database-user nextcloud \
-	        --database-pass #{vault[:sql_root]} \
+	        --database-pass #{vault[:sql_nextcloud]} \
 	        --admin-pass #{vault['cloud_admin']} \
 	        --admin-user admin \
 	        -v"
