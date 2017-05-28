@@ -42,7 +42,6 @@ mysql_database 'secure_installation' do
   only_if 'mysql -e "SHOW DATABASES"'
 end
 
-end
 mysql_database_user 'nextcloud' do
   connection mysql_connection_info
   password node['sql_nextcloud']['password']
