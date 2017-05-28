@@ -12,7 +12,7 @@ end
 
 include_recipe 'chef-vault'
 
-vault = ChefVault::Item.load(:credentials, node.name)
+vault = ChefVault::Item.load("credentials", node.name)
 
 node.default['s3fs']['buckets'] = vault[:buckets]
 
