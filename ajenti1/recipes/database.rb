@@ -14,7 +14,6 @@ end
 
 vault = chef_vault_item(:credentials, node.name)
 
-node.default['sql_root']['password'] = vault['sql_root']
 node.default['sql_nextcloud']['password'] = vault['sql_nextcloud']
 
 #mysql_connection_info = {
@@ -24,7 +23,8 @@ node.default['sql_nextcloud']['password'] = vault['sql_nextcloud']
 #}
 mysql_connection_info = {
   :host       => '127.0.0.1',
-  :username   => 'root'
+  :username   => 'root',
+  :password   => vault['sql_root']
 }
 
 mysql_database_user 'nextcloud' do
