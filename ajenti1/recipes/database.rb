@@ -39,7 +39,7 @@ execute 'install nextcloud' do
 	        --database-name nextcloud \
 	        --database-user nextcloud \
 	        --database-pass #{vault[:sql_root]} \
-	        --admin-pass #{vault[:cloud_admin]} \
+	        --admin-pass #{vault['cloud_admin']} \
 	        --admin-user admin \
 	        -v"
 	user 'www-data'
