@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 include_recipe 'chef-vault'
-vault = chef_vault_item(node[:s3fs][:vault], node.name)
+vault = chef_vault_item(:credentials, node_name)
 
 node.default['s3fs']['buckets'] = vault[:buckets]
 
