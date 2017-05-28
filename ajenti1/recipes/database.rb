@@ -27,23 +27,6 @@ mysql_connection_info = {
   :username   => 'root'
 }
 
-mysql_database 'secure_installation' do
-  connection mysql_connection_info
-  database_name 'mysql'
-  sql 'DELETE FROM mysql.user WHERE User="";'
-  action :query
-  only_if 'mysql -e "SHOW DATABASES"'
-end
-
-
-mysql_database 'secure_installation_2' do
-  connection mysql_connection_info
-  database_name 'mysql'
-  sql 'DELETE FROM mysql.user WHERE User="root" AND Host NOT IN ("localhost","127.0.0.1","::1");'
-  action :query
-  only_if 'mysql -e "SHOW DATABASES"'
-end
-
 mysql_database_user 'nextcloud' do
   connection mysql_connection_info
   password node['sql_nextcloud']['password']
