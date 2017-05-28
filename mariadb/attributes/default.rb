@@ -168,7 +168,7 @@ default['mariadb']['debian']['host'] = 'localhost'
 #
 # install valid value is 'package',
 # hope to have 'from_source' in the near future
-default['mariadb']['install']['type'] = 'package'
+default['mariadb']['install']['type'] = false
 default['mariadb']['install']['version'] = '5.5'
 default['mariadb']['install']['prefer_os_package'] = false
 default['mariadb']['install']['prefer_scl_package'] = false
