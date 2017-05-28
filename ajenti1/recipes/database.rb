@@ -30,6 +30,6 @@ mysql_database_user 'nextcloud' do
   password vault['sql_nextcloud']
   database_name 'nextcloud'
   host '127.0.0.1'
-  privileges :all
+  privileges [:all]
   action [:create, :grant]
 end
