@@ -10,7 +10,7 @@ supports 'amazon'
 
 depends 'chef-vault'
 depends 'mariadb'
-depends 'mysql'
+depends 'mariadb-enterprise'
 depends 'mysql2_chef_gem'
 depends 'poise-python'
 depends 'database'
