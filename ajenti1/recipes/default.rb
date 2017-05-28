@@ -48,11 +48,6 @@ service 'ajenti' do
     action [:enable, :start]
 end
 
-service 'ajenti' do
-	action [:restart]
-	only_if "cat /etc/passwd | grep www-data"
-end
-
 execute 'apply ajenti-v' do
 	command 'ajenti-ipc v apply'
 	action :run
