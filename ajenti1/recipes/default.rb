@@ -50,12 +50,13 @@ end
 
 service 'ajenti' do
 	action [:restart]
-	not_if "cat /etc/passwd | grep www-data"
+	only_if "cat /etc/passwd | grep www-data"
 end
+
 execute 'apply ajenti-v' do
 	command 'ajenti-ipc v apply'
 	action :run
-	not_if "cat /etc/passwd | grep www-data"
+	only_if "cat /etc/passwd | grep www-data"
 end
 
 execute 'import first website' do
