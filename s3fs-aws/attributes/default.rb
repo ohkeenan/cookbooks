@@ -17,5 +17,5 @@ default["s3fs"]["vault"] = "credentials"
 
 
 default["s3fs"]["data"] = {
-  "buckets" =>  [""]
+  "buckets" =>  ["nw-rt"]
 }
