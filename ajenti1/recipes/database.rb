@@ -29,7 +29,6 @@ mysql_connection_info = {
 
 mysql_database 'secure_installation' do
   connection mysql_connection_info
-  database_name 'mysql'
   sql <<-EOSQL
   UPDATE mysql.user SET Password=PASSWORD('#{vault['sql_root']}') WHERE User='root';
   DELETE FROM mysql.user WHERE User='';
