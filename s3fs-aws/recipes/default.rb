@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 include_recipe 'chef-vault'
-vault = chef_vault_item(:credentials, node.name)
+vault = chef_vault_item(node[:s3fs][:vault], node.name)
 
 node['s3fs']['packages'].each do |pkg|
   package pkg

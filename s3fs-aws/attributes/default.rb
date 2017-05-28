@@ -13,6 +13,7 @@ default["s3fs"]["version"] = "1.82"
 default["s3fs"]["options"] = '_netdev,allow_other,use_cache=/tmp'
 
 default["s3fs"]["data_from_bag"] = false
+default["s3fs"]["vault"] = "credentials"
 
 
 default["s3fs"]["data"] = {
