@@ -23,7 +23,7 @@ node.default['sql_nextcloud']['password'] = vault['sql_nextcloud']
   #:password => '' #node['sql_root']['password']
 #}
 mysql_connection_info = {
-  :host       => '127.0.0.1'
+  :host       => '127.0.0.1',
   :username   => 'root'
 }
 
