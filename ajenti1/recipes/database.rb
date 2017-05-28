@@ -30,7 +30,7 @@ mysql_connection_info = {
 mysql_database 'secure_installation' do
   connection mysql_connection_info
   database_name 'mysql'
-  sql "DELETE FROM mysql.user WHERE User=''; DELETE FROM db WHERE Db='test' OR Db='test\\\\_%'; "
+  sql "DELETE FROM mysql.user WHERE User=''; DELETE FROM db WHERE Db='test' OR Db='test\\_%'; "
   action :query
   only_if 'mysql -e "SHOW DATABASES"'
 end
