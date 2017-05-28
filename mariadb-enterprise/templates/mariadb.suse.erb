@@ -1,0 +1,6 @@
+[<%= node['mariadb']['name'] %>]
+name = <%= node['mariadb']['name'] %>
+autorefresh=0
+baseurl = http://yum.mariadb.org/<%= node['mariadb']['version'] %>/<%= node['mariadb']['release_name'] %>/<%= node[:platform_version].to_i %>/$basearch
+gpgkey = https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck = 0

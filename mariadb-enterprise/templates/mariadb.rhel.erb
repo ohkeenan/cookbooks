@@ -1,0 +1,5 @@
+[<%= node['mariadb']['name'] %>]
+name = <%= node['mariadb']['name'] %>
+baseurl = http://yum.mariadb.org/<%= node['mariadb']['version'] %>/<%= node[:platform] == "redhat" ? node[:platform_family] : node[:platform] %>/$releasever/$basearch
+gpgkey = https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck = 1

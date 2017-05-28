@@ -1,0 +1,54 @@
+{
+  "name": "mariadb-enterprise",
+  "description": "MariaDB Enterprise Chef Cookbook",
+  "long_description": "",
+  "maintainer": "MariaDB Corporation",
+  "maintainer_email": "Andrey.Kuznetsov@mariadb.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "redhat": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "suse": ">= 0.0.0"
+  },
+  "dependencies": {
+
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+    "install": "Install MariaDB Enterprise Server",
+    "uninstall": "Uninstall MariaDB Enterprise Server",
+    "purge": "Uninstall MariaDB Enterprise Server and remove all data and configuration files",
+    "start": "Create new instance of service and start it",
+    "stop": "Create new instance of service and start it",
+    "install_backuper": "Install backuper package",
+    "uninstall_backuper": "Uninstall backuper package",
+    "backup": "Create backup",
+    "restore": "Restore backup"
+  },
+  "version": "0.0.9",
+  "source_url": "",
+  "issues_url": ""
+}
