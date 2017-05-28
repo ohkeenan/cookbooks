@@ -8,7 +8,7 @@
 #
 
 include_recipe 'chef-vault'
-vault = chef_vault_item(node[:s3fs][:vault], vault[:buckets])
+vault = chef_vault_item(node[:s3fs][:vault], node.name)
 
 
 node['s3fs']['packages'].each do |pkg|
