@@ -56,7 +56,7 @@ end
 mysql_database 'secure_installation_delete_test' do
   connection mysql_connection_info
   database_name 'mysql'
-  sql 'DELETE FROM mysql.db WHERE Db=test OR Db="test\\\\_%";'
+  sql 'DELETE FROM mysql.db WHERE Db="test" OR Db="test\\\\_%";'
   action :query
   only_if 'mysql -e "SHOW DATABASES"'
 end
