@@ -6,10 +6,16 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+chef_gem 'chef-vault' do
+  compile_time true if respond_to?(:compile_time)
+end
+
 include_recipe 'chef-vault'
-vault = chef_vault_item(:credentials, "zhkeenan")
+
+vault = ChefVault::Item.load(:credentials, node.name)
 
 node.default['s3fs']['buckets'] = vault[:buckets]
+
 
 node['s3fs']['packages'].each do |pkg|
   package pkg
