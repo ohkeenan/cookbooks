@@ -17,12 +17,12 @@ vault = chef_vault_item(:credentials, node.name)
 node.default['sql_root']['password'] = vault['sql_root']
 node.default['sql_nextcloud']['password'] = vault['sql_nextcloud']
 
-mysql_service 'default' do
+mariadb_service 'default' do
   initial_root_password node['sql_nextcloud']['password']
   action [:create, :start]
 end
 
-mysql_database 'nextcloud' do
+mariadb_database 'nextcloud' do
   connection(
     :host     => '127.0.0.1',
     :username => 'nextcloud',
