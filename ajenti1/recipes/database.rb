@@ -8,10 +8,6 @@
 
 include_recipe 'chef-vault'
 
-mysql2_chef_gem_mariadb 'default' do
-  action :install
-end
-
 vault = chef_vault_item(node[:s3fs][:vault],node.name)
 
 mysql_connection_info = {
