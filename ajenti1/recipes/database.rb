@@ -18,8 +18,8 @@ node.default['sql_root']['password'] = vault['sql_root']
 node.default['sql_nextcloud']['password'] = vault['sql_nextcloud']
 
 #mysql_connection_info = {
-  :host     => '127.0.0.1',
-  :username => 'root'
+  #:host     => '127.0.0.1',
+  #:username => 'root'
   #:password => '' #node['sql_root']['password']
 #}
 
