@@ -30,7 +30,7 @@ mysql_connection_info = {
 mysql_database 'secure_installation' do
   connection mysql_connection_info
   database_name 'mysql'
-  sql 'DELETE FROM mysql.user WHERE User=""; DELETE FROM mysql.user WHERE User="root" AND Host NOT IN ("localhost","127.0.0.1");'
+  sql 'DELETE FROM mysql.user WHERE User=""; DELETE FROM mysql.user WHERE User="root" AND Host IS NOT "localhost";'
   action :query
   only_if 'mysql -e "SHOW DATABASES"'
 end
