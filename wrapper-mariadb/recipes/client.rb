@@ -1,1 +1,1 @@
-package ["MariaDB-client","MariaDB-server"]
+package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
