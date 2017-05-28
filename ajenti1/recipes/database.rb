@@ -33,3 +33,15 @@ mysql_database_user 'nextcloud' do
   privileges [:all]
   action [:create, :grant]
 end
+
+execute 'install nextcloud' do
+	command "php /srv/nextcloud/occ maintenance:install --database mysql \
+	        --database-name nextcloud \
+	        --database-user nextcloud \
+	        --database-pass #{vault[:sql_root]} \
+	        --admin-pass #{vault[:cloud_admin]} \
+	        --admin-user admin \
+	        -v"
+	user 'www-data'
+  not_if 'sudo -u www-data php /srv/nextcloud/occ status | grep true'
+end
