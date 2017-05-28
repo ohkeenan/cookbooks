@@ -14,3 +14,8 @@ if node[:platform] == 'amazon'
     action :create
   end	
 end
+package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
+
+service 'mysql' do
+  action [:enable, :start]
+end
