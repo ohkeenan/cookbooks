@@ -10,7 +10,7 @@ end
 default["s3fs"]["mount_root"] = '/mnt'
 default["s3fs"]["multi_user"] = false
 default["s3fs"]["version"] = "1.82"
-default["s3fs"]["options"] = '_netdev,allow_other,use_cache=/tmp'
+default["s3fs"]["options"] = '_netdev,uid=155,gid=155,umask=0007,allow_other,use_cache=/tmp'
 
 default["s3fs"]["data_from_bag"] = false
 default["s3fs"]["vault"] = "credentials"
