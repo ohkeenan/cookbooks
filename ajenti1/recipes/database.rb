@@ -46,3 +46,9 @@ execute 'install nextcloud' do
 	user 'www-data'
   not_if "sudo -u www-data php /srv/nextcloud/occ config:system:get trusted_domains | grep #{vault[:domain]}"
 end
+
+execute 'import nextcloud into ajenti' do
+	command 'ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && rm /home/ec2-user/rt/nextcloud.json && ajenti-ipc v apply'
+	action :run
+	only_if { ::File.exists?('/home/ec2-user/rt/nextcloud.json')}
+end
