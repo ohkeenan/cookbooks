@@ -41,7 +41,7 @@ execute 'install nextcloud' do
   only_if 'sudo -u www-data php /srv/nextcloud/occ status | grep true'
 end
 
-execute 'install nextcloud' do
+execute 'install nextcloud add trusted domain' do
 	command "php /srv/nextcloud/occ config:system:set trusted_domains 2 --value=cloud.#{vault[:domain]}"
 	user 'www-data'
   only_if "sudo -u www-data php /srv/nextcloud/occ config:system:get trusted_domains | grep #{vault[:domain]}"
