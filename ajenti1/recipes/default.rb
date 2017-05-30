@@ -99,6 +99,7 @@ end
 
 execute 'ajenti_restart' do
 	command 'service ajenti restart'
+	notifies :run, 'execute[ajenti_v_apply]', :immediately
 	action :nothing
 end
 
@@ -106,7 +107,6 @@ execute 'import first website' do
 	command "ajenti-ipc v import /home/ec2-user/rt/website.json"
 	action :run
 	notifies :run, 'execute[rm_ajenti_website_json]', :immediately
-	notifies :run, 'execute[ajenti_v_apply]', :immediately
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
 
