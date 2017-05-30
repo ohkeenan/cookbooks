@@ -64,6 +64,8 @@ end
 
 execute 'ajenti_v_apply' do
 	command "ajenti-ipc v apply"
+	retries 1
+	retry_delay 4
 	action :nothing
 end
 
