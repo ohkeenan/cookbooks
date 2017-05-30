@@ -34,10 +34,10 @@ execute 'install nextcloud' do
 	        --database-name nextcloud \
 	        --database-user nextcloud \
 	        --database-pass #{vault[:sql_nextcloud]} \
-	        --admin-pass #{vault[:cloud_admin']} \
+	        --admin-pass #{vault[:cloud_admin]} \
 	        --admin-user admin \
 	        -v"
-	user "www-data
+	user "www-data"
   not_if "sudo -u www-data php /srv/nextcloud/occ status | grep true"
 end
 
