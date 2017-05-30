@@ -17,13 +17,13 @@ end
 
 execute "download rainloop" do
 	command "wget -qO- https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip | bsdtar -xf- -C /srv/rainloop/"
+	notifies :run, 'execute[chown_rainloop]', :immediately
 	not_if { ::Dir.exists?("/srv/rainloop/data")}
 end
 
-execute "chown rainloop" do
+execute "chown_rainloop" do
 	command "chown -R www-data:www-data /srv/rainloop"
-	action :run
-	not_if "ls -l /srv/rainloop | grep -q www-data"
+	action :nothing
 end
 
 bash 'import first rainloop' do
