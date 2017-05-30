@@ -16,6 +16,6 @@ directory "/srv/rainloop" do
 end
 
 execute "download rainloop" do
-	command "wget -qO- https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip | bsdtar -xf- -C /Applications /srv/rainloop/"
+	command "wget -qO- https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip | bsdtar -xf- -C /srv/rainloop/"
 	not_if { ::Dir.exists?("/srv/rainloop/data")}
 end
