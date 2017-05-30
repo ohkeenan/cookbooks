@@ -28,6 +28,7 @@ package ["gcc","openssl-devel","python-devel","openldap-devel","libstdc++-devel"
 python_execute 'upgrade pip' do
 	action :run
 	command "-m pip install --upgrade pip"
+	not_if "python -m pip --version | grep 9.0.1"
 end
 
 python_execute 'install ajenti' do
