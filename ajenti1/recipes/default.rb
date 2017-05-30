@@ -39,17 +39,52 @@ end
 
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm","php70-mysqlnd","php70-fpm"]
 
-execute 'configure php7' do
-	command "pkill php-fpm && \
-					unlink /etc/alternatives/php && \
-					unlink /etc/alternatives/php-fpm && \
-					unlink /etc/alternatives/php-fpm-init && \
-					ln -s /usr/bin/php7 /etc/alternatives/php && \
-					ln -s /usr/sbin/php-fpm-7.0 /etc/alternatives/php-fpm && \
-					ln -s /etc/rc.d/init.d/php-fpm-7.0 /etc/alternatives/php-fpm-init && \
-					service php-fpm restart"
+execute 'kill php-fpm5' do
+	command "pkill php-fpm"
+	action :run
+	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
+end
+
+execute 'unlink php5' do
+	command "unlink /etc/alternatives/php"
 	action :run
 	only_if "ls -l /etc/alternatives/php | grep php-5"
+end
+
+execute 'unlink php-fpm5' do
+	command "unlink /etc/alternatives/php-fpm"
+	action :run
+	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
+end
+
+execute 'unlink php-fpm5-init' do
+	command "unlink /etc/alternatives/php-fpm-init"
+	action :run
+	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
+end
+
+execute 'set php to php7' do
+	command "ln -s /usr/bin/php7 /etc/alternatives/php"
+	action :run
+	not_if { ::File.symlink?('/etc/alternatives/php') }
+end
+
+execute 'set php-fpm to php7' do
+	command "ln -s /usr/sbin/php-fpm-7.0 /etc/alternatives/php-fpm"
+	action :run
+	not_if { ::File.symlink?('/etc/alternatives/php-fpm') }
+end
+
+execute 'set php-fpm-init to php7' do
+	command "ln -s /etc/rc.d/init.d/php-fpm-7.0 /etc/alternatives/php-fpm-init"
+	action :run
+	not_if { ::File.symlink?('/etc/alternatives/php-fpm-init') }
+end
+
+execute 'configure php7' do
+	command "service php-fpm restart"
+	action :run
+	only_if "etc/alternatives/php-fpm --version | grep PHP\ 5"
 end
 
 service 'ajenti' do
