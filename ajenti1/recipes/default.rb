@@ -53,12 +53,12 @@ link '/etc/alternatives/php' do
 	only_if "ls -l /etc/alternatives/php | grep php-5"
 end
 
-link '/etc/alternatives/php-fpm'
+link '/etc/alternatives/php-fpm' do
 	action :delete
 	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
 end
 
-link '/etc/alternatives/php-fpm-init'
+link '/etc/alternatives/php-fpm-init' do
 	action :delete
 	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
 end
