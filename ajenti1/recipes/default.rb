@@ -70,6 +70,7 @@ end
 link '/usr/sbin/php-fpm-7.0' do
 	to '/etc/alternatives/php-fpm'
 	notifies :run, 'execute[ajenti_restart]', :immediately
+	notifies :run, 'execute[ajenti_v_apply]', :immediately
 end
 
 link '/etc/rc.d/init.d/php-fpm-7.0' do
@@ -83,7 +84,6 @@ end
 
 execute 'ajenti_restart' do
 	command 'service ajenti restart'
-	notifies :run, 'execute[ajenti_v_apply]', :immediately
 	action :nothing
 end
 
