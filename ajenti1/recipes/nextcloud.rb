@@ -24,8 +24,8 @@ execute "chown nextcloud" do
 	not_if "ls -l /srv/nextcloud | grep -q www-data"
 end
 
-execute 'import first nextcloud' do
-    command "ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && \
+bash 'import first nextcloud' do
+    code "ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && \
 						rm /home/ec2-user/rt/nextcloud.json && \
 						ajenti-ipc v apply"
     action :run

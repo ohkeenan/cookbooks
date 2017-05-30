@@ -19,3 +19,17 @@ execute "download rainloop" do
 	command "wget -qO- https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip | bsdtar -xf- -C /srv/rainloop/"
 	not_if { ::Dir.exists?("/srv/rainloop/data")}
 end
+
+execute "chown rainloop" do
+	command "chown -R www-data:www-data /srv/rainloop"
+	action :run
+	not_if "ls -l /srv/rainloop | grep -q www-data"
+end
+
+bash 'import first rainloop' do
+    code "ajenti-ipc v import /home/ec2-user/rt/rainloop.json && \
+						rm /home/ec2-user/rt/rainloop.json && \
+						ajenti-ipc v apply"
+    action :run
+    only_if { ::File.exists?('/home/ec2-user/rt/rainloop.json')}
+end
