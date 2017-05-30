@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
+
 mysql2_chef_gem_mariadb 'default' do
   action :install
 end
@@ -22,7 +24,6 @@ if node[:platform] == 'amazon'
     action :create
   end
 end
-package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
 
 service 'mysql' do
   action [:enable, :start]
