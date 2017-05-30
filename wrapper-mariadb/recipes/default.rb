@@ -7,12 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
-
-mysql2_chef_gem_mariadb 'default' do
-  action :install
-end
-
 include_recipe 'chef-vault'
 vault = chef_vault_item(node[:s3fs][:vault], node.name)
 
@@ -28,6 +22,13 @@ end
 service 'mysql' do
   action [:enable, :start]
 end
+
+package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
+
+mysql2_chef_gem_mariadb 'default' do
+  action :install
+end
+
 
 mysql_connection_info = {
   :host       => '127.0.0.1',
