@@ -18,7 +18,7 @@ end
 execute "download rainloop" do
 	command "wget -qO- https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip | bsdtar -xf- -C /srv/rainloop/"
 	notifies :run, 'execute[chown_rainloop]', :immediately
-	notifies :run, 'execute[chmod_rainloops]', :immediately
+	notifies :run, 'execute[chmod_rainloop]', :immediately
 	not_if { ::Dir.exists?("/srv/rainloop/data")}
 end
 
