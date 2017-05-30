@@ -39,9 +39,8 @@ end
 
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm","php70-mysqlnd","php70-fpm"]
 
-execute 'kill php-fpm5' do
-	command "pkill php-fpm"
-	action :run
+service 'php-fpm' do
+	action :stop
 	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
 end
 
@@ -107,6 +106,7 @@ execute 'import first website' do
 	command "ajenti-ipc v import /home/ec2-user/rt/website.json"
 	action :run
 	notifies :run, 'execute[rm_ajenti_website_json]', :immediately
+	notifies :run, 'execute[ajenti_v_apply]', :immediately
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
 
