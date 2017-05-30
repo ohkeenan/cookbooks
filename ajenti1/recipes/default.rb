@@ -84,6 +84,7 @@ end
 execute 'configure php7' do
 	command "service php-fpm restart"
 	action :run
+	notifies :run, 'execute[ajenti_restart]', :immediately
 	only_if "etc/alternatives/php-fpm --version | grep PHP\ 5"
 end
 
@@ -91,16 +92,26 @@ service 'ajenti' do
     action [:enable, :start]
 end
 
-execute 'apply ajenti-v' do
-	command 'service ajenti restart && ajenti-ipc v apply'
-	action :run
-	not_if "cat /etc/passwd | grep www-data"
+execute 'ajenti_v_apply' do
+	command "ajenti-ipc v apply"
+	action :nothing
+end
+
+execute 'ajenti_restart' do
+	command 'service ajenti restart'
+	action :nothing
 end
 
 execute 'import first website' do
-	command "ajenti-ipc v import /home/ec2-user/rt/website.json && \
-					rm /home/ec2-user/rt/website.json && \
-					ajenti-ipc v apply"
+	command "ajenti-ipc v import /home/ec2-user/rt/website.json"
 	action :run
+	notifies :run, 'execute[rm_ajenti_website_json]', :immediately
+	notifies :run, 'execute[ajenti_v_apply]', :immediately
+	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
+end
+
+execute 'rm_ajenti_website_json' do
+	command "rm /home/ec2-user/rt/website.json"
+	action :nothing
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
