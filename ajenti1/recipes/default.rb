@@ -69,7 +69,7 @@ end
 
 link '/usr/sbin/php-fpm-7.0' do
 	to '/etc/alternatives/php-fpm'
-	notifies :run, 'execute[ajenti-restart]', :immediately
+	notifies :run, 'execute[ajenti_restart]', :immediately
 end
 
 link '/etc/rc.d/init.d/php-fpm-7.0' do
