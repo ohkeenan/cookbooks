@@ -49,32 +49,17 @@ service 'php-fpm' do
 end
 
 link '/etc/alternatives/php' do
-	action :delete
-	only_if "ls -l /etc/alternatives/php | grep php-5"
+	to '/usr/bin/php7'
 end
 
 link '/etc/alternatives/php-fpm' do
-	action :delete
-	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
-end
-
-link '/etc/alternatives/php-fpm-init' do
-	action :delete
-	only_if "ls -l /etc/alternatives/php-fpm | grep php-fpm-5"
-end
-
-link '/usr/bin/php7' do
-	to '/etc/alternatives/php'
-end
-
-link '/usr/sbin/php-fpm-7.0' do
-	to '/etc/alternatives/php-fpm'
+	to '/usr/sbin/php-fpm-7.0'
 	notifies :run, 'execute[ajenti_restart]', :immediately
 	notifies :run, 'execute[ajenti_v_apply]', :immediately
 end
 
-link '/etc/rc.d/init.d/php-fpm-7.0' do
-	to '/etc/alternatives/php-fpm-init'
+link '/etc/alternatives/php-fpm-init' do
+	to '/etc/rc.d/init.d/php-fpm-7.0'
 end
 
 execute 'ajenti_v_apply' do
