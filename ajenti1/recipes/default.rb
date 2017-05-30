@@ -57,7 +57,7 @@ service 'ajenti' do
 end
 
 execute 'apply ajenti-v' do
-	command 'ajenti-ipc v apply'
+	command 'service ajenti restart && ajenti-ipc v apply'
 	action :run
 	not_if "cat /etc/passwd | grep www-data"
 end
