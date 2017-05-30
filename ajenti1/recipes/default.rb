@@ -48,7 +48,7 @@ execute 'configure php7' do
 					ln -s /etc/rc.d/init.d/php-fpm-7.0 /etc/alternatives/php-fpm-init && \
 					service php-fpm restart"
 	action :run
-	only_if "ls -l /etc/alternatives/php | grep 7"
+	only_if "ls -l /etc/alternatives/php | grep php5"
 end
 
 service 'ajenti' do
