@@ -92,11 +92,6 @@ end
 iam_role = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/`.strip
 user_bucket = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/ |awk -F- '{printf $3}' |md5sum |tr -cd '[[:alnum:]]'`.strip
 
-group 's3fs' do
-	action :create
-	system true
-	gid '155'
-end
 
 user 's3fs' do
 	uid '155'
@@ -111,7 +106,9 @@ group 'www-data' do
 end
 
 group 's3fs' do
-	action :manage
+	action [:create, :manage]
+  system true
+  gid '155'
 	members ['s3fs','www-data','ec2-user']
 end
 
