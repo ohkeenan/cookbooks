@@ -19,11 +19,11 @@ if node[:platform] == 'amazon'
   end
 end
 
+package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
+
 service 'mysql' do
   action [:enable, :start]
 end
-
-package ["MariaDB-client","MariaDB-server","MariaDB-devel"]
 
 mysql2_chef_gem_mariadb 'default' do
   action :install
