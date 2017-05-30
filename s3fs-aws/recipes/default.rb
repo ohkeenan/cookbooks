@@ -97,6 +97,7 @@ user 's3fs' do
 	uid '155'
 	group 's3fs'
 	system true
+  not_if "cat /etc/passwd | grep s3fs"
 end
 
 group 's3fs' do
