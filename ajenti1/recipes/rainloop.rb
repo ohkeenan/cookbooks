@@ -18,11 +18,17 @@ end
 execute "download rainloop" do
 	command "wget -qO- https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip | bsdtar -xf- -C /srv/rainloop/"
 	notifies :run, 'execute[chown_rainloop]', :immediately
+	notifies :run, 'execute[chmod_rainloops]', :immediately
 	not_if { ::Dir.exists?("/srv/rainloop/data")}
 end
 
 execute "chown_rainloop" do
 	command "chown -R www-data:www-data /srv/rainloop"
+	action :nothing
+end
+
+execute "chmod_rainloop" do
+	command "chmod 0750 -R /srv/rainloop"
 	action :nothing
 end
 
