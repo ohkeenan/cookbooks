@@ -38,7 +38,7 @@ execute 'install nextcloud' do
 	        --admin-user admin \
 	        -v"
 	user "www-data"
-  only_if "sudo -u www-data php /srv/nextcloud/occ status | grep true"
+  only_if "sudo -u www-data php /srv/nextcloud/occ status | grep false"
 end
 
 execute 'install nextcloud add trusted domain' do
