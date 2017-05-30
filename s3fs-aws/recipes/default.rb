@@ -95,7 +95,6 @@ user_bucket = `curl -s http://169.254.169.254/latest/meta-data/iam/security-cred
 
 user 's3fs' do
 	uid '155'
-	group 's3fs'
 	system true
   not_if "cat /etc/passwd | grep s3fs"
 end
