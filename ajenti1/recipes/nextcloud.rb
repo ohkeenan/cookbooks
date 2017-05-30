@@ -25,7 +25,9 @@ execute "chown nextcloud" do
 end
 
 execute 'import first nextcloud' do
-    command 'ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && rm /home/ec2-user/rt/nextcloud.json && ajenti-ipc v apply'
+    command "ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && \
+						rm /home/ec2-user/rt/nextcloud.json && \
+						ajenti-ipc v apply"
     action :run
     only_if { ::File.exists?('/home/ec2-user/rt/nextcloud.json')}
 end

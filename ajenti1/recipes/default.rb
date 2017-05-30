@@ -39,7 +39,14 @@ end
 package ["ajenti","ajenti-v","ajenti-v-mail","ajenti-v-nginx","ajenti-v-mysql","ajenti-v-php7.0-fpm","ajenti-v-php-fpm","php70-mysqlnd","php70-fpm"]
 
 execute 'configure php7' do
-	command "unlink /etc/alternatives/php && unlink /etc/alternatives/php-fpm && unlink /etc/alternatives/php-fpm-init && ln -s /usr/bin/php7 /etc/alternatives/php && ln -s /usr/sbin/php-fpm-7.0 /etc/alternatives/php-fpm && ln -s /etc/rc.d/init.d/php-fpm-7.0 /etc/alternatives/php-fpm-init"
+	command "pkill php-fpm && \
+					unlink /etc/alternatives/php && \
+					unlink /etc/alternatives/php-fpm && \
+					unlink /etc/alternatives/php-fpm-init && \
+					ln -s /usr/bin/php7 /etc/alternatives/php && \
+					ln -s /usr/sbin/php-fpm-7.0 /etc/alternatives/php-fpm && \
+					ln -s /etc/rc.d/init.d/php-fpm-7.0 /etc/alternatives/php-fpm-init && \
+					service php-fpm restart"
 	action :run
 	only_if "ls -l /etc/alternatives/php | grep 7"
 end
@@ -55,7 +62,9 @@ execute 'apply ajenti-v' do
 end
 
 execute 'import first website' do
-	command 'ajenti-ipc v import /home/ec2-user/rt/website.json && rm /home/ec2-user/rt/website.json && ajenti-ipc v apply'
+	command "ajenti-ipc v import /home/ec2-user/rt/website.json && \
+					rm /home/ec2-user/rt/website.json && \
+					ajenti-ipc v apply"
 	action :run
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
