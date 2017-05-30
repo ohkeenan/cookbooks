@@ -99,12 +99,6 @@ user 's3fs' do
 	system true
 end
 
-group 'www-data' do
-	action :manage
-	members ['www-data','ec2-user']
-	system true
-end
-
 group 's3fs' do
 	action [:create, :manage]
   system true
