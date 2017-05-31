@@ -21,6 +21,19 @@ mysql_database 'nextcloud' do
   action :create
 end
 
+mysql_database 'rainloop' do
+  connection mysql_connection_info
+  action :create
+end
+
+mysql_database_user 'rainloop' do
+  connection mysql_connection_info
+  password vault['sql_rainloop']
+  database_name 'rainloop'
+  host 'localhost'
+  action [:create, :grant]
+end
+
 mysql_database_user 'nextcloud' do
   connection mysql_connection_info
   password vault['sql_nextcloud']

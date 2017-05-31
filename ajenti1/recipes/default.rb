@@ -62,6 +62,10 @@ link '/etc/alternatives/php-fpm-init' do
 	to '/etc/rc.d/init.d/php-fpm-7.0'
 end
 
+execute 'start ajenti-v' do
+
+end
+
 execute 'ajenti_v_apply' do
 	command "ajenti-ipc v apply"
 	retries 1
@@ -72,6 +76,21 @@ end
 execute 'ajenti_restart' do
 	command 'service ajenti restart'
 	action :nothing
+end
+
+directory "/srv/#{vault[:domain]}" do
+	owner 'www-data'
+	group 'www-data'
+	mode '0750'
+	action :create
+end
+
+template "/srv/#{vault[:domain]}/index.html" do
+  source 'index.erb'
+  owner 'www-data'
+  group 'www-data'
+  mode '0755'
+	action :create_if_missing
 end
 
 execute 'import first website' do
