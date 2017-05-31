@@ -6,6 +6,10 @@
 #
 #
 
+include_recipe 'chef-vault'
+vault = chef_vault_item(node[:s3fs][:vault], node[:s3fs][:vaultitem])
+
+
 execute "enable epel repository" do
 	command "yum-config-manager --quiet --enable epel"
 	action :run
