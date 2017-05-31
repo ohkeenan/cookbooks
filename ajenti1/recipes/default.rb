@@ -66,8 +66,12 @@ link '/etc/alternatives/php-fpm-init' do
 	to '/etc/rc.d/init.d/php-fpm-7.0'
 end
 
-execute 'start ajenti-v' do
+service 'nginx' do
+	action [:enable, :start]
+end
 
+service 'php-fpm' do
+	action [:enable, :start]
 end
 
 execute 'ajenti_v_apply' do
