@@ -70,10 +70,6 @@ service 'nginx' do
 	action [:enable, :start]
 end
 
-service 'php-fpm' do
-	action [:enable, :start]
-end
-
 execute 'ajenti_v_apply' do
 	command "ajenti-ipc v apply"
 	retries 1
