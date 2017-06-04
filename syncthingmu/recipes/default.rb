@@ -58,7 +58,7 @@ class Stuser
   end
 end
 
-if ChefVault::Item.vault?(node[:syncthingmu][:vault], node.name)
+if ( node["syncthingmu"]["vault"] && node["syncthingmu"]["vaultitem"] )
   st_users = retrieve_st_users({"users" => vault[:syncthing_users]})
 else
   st_users = retrieve_st_users(node['syncthingmu']['data'])
