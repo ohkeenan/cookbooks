@@ -16,6 +16,9 @@ default["syncthingmu"]["options"] = ''
 
 default["syncthingmu"]["data_from_bag"] = false
 
+default["syncthingmu"]["vault"] = "credentials"
+default["syncthingmu"]["vaultitem"] = node.name
+
 default["syncthingmu"]["data"] = {
   "users" => []
 }
