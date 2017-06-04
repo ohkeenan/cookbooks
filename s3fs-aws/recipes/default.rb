@@ -81,10 +81,9 @@ elsif node['s3fs']['data_from_bag']
   end
 
   buckets = retrieve_s3_buckets({"buckets" => s3_bag['buckets'], "access_key_id" => s3_bag['access_key_id'], "secret_access_key" => s3_bag['secret_access_key']})
-else
-  if ChefVault::Item.vault?(node[:s3fs][:vault], node.name)
+elsif ChefVault::Item.vault?(node[:s3fs][:vault], node.name)
     buckets = retrieve_s3_buckets({"buckets" => vault[:buckets]})
-  else
+else
     buckets = retrieve_s3_buckets(node['s3fs']['data'])
   end
 end
