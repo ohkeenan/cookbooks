@@ -69,7 +69,7 @@ st_users.each do |st_user|
     action :create
   end
   execute "syncthing for #{st_user[:name]}" do
-    command "syncthing &"
+    command "exec syncthing &"
     user st_user[:name]
     not_if "ps|grep syncthing"
   end
