@@ -8,7 +8,7 @@
 #
 
 include_recipe 'chef-vault'
-if !(node[:syncthingmu][:vault]).nil?
+if node[:syncthingmu][:vault]
   vault = chef_vault_item(node[:syncthingmu][:vault], node[:syncthingmu][:vaultitem])
 end
 
