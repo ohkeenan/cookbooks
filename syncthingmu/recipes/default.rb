@@ -27,3 +27,50 @@ if node['syncthingmu']['build_from_source'] == true
     not_if { File.exists?("/usr/bin/syncthing") }
   end
 end
+
+def retrieve_st_users(st_data)
+  st_users = []
+
+  st_data['users'].each do |st_users|
+    st_user = Stuser.new(st_user, node)
+    st_users << {
+      :name => st_user.name
+    }
+  end
+
+  st_users
+end
+
+class Stuser
+  attr_reader :name
+
+  def initialize st_user, node
+    if st_user.is_a? String
+      @name = st_user
+    elsif st_user.is_a? Hash
+      @name = st_user['name']
+    else
+      @name = ""
+    end
+  end
+end
+
+if ChefVault::Item.vault?(node[:syncthingmu][:vault], node.name)
+  st_users = retrieve_st_users({"users" => vault[:syncthing_users]})
+else
+  st_users = retrieve_st_users(node['syncthingmu']['users'])
+end
+
+
+st_users.each do |st_user|
+
+  user st_user[:name] do
+    action :create
+  end
+  execute "syncthing for #{user[:name]}" do
+    command "syncthing &"
+    user st_user[:name]
+    not_if "ps|grep syncthing"
+  end
+
+end
