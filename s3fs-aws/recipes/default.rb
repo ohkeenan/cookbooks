@@ -85,8 +85,8 @@ elsif ChefVault::Item.vault?(node[:s3fs][:vault], node.name)
     buckets = retrieve_s3_buckets({"buckets" => vault[:buckets]})
 else
     buckets = retrieve_s3_buckets(node['s3fs']['data'])
-  end
 end
+
 
 iam_role = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/`.strip
 user_bucket = `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/ |awk -F- '{printf $3}' |md5sum |tr -cd '[[:alnum:]]'`.strip
