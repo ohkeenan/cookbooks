@@ -13,9 +13,10 @@ default["s3fs"]["version"] = "1.82"
 default["s3fs"]["options"] = '_netdev,uid=155,gid=155,umask=0007,allow_other,use_cache=/tmp'
 
 default["s3fs"]["data_from_bag"] = false
+
+default["s3fs"]["use_vault"] = true
 default["s3fs"]["vault"] = "credentials"
 default["s3fs"]["vaultitem"] = node.name
-
 
 default["s3fs"]["data"] = {
   "buckets" =>  [""]

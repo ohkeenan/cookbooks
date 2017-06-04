@@ -8,7 +8,6 @@
 #
 
 include_recipe 'chef-vault'
-vault = chef_vault_item(node[:s3fs][:vault], node[:s3fs][:vaultitem])
 
 
 node['s3fs']['packages'].each do |pkg|
@@ -81,7 +80,8 @@ elsif node['s3fs']['data_from_bag']
   end
 
   buckets = retrieve_s3_buckets({"buckets" => s3_bag['buckets'], "access_key_id" => s3_bag['access_key_id'], "secret_access_key" => s3_bag['secret_access_key']})
-elsif ChefVault::Item.vault?(node[:s3fs][:vault], node.name)
+elsif node['s3fs']['use_vault']
+    vault = chef_vault_item(node[:s3fs][:vault], node[:s3fs][:vaultitem])
     buckets = retrieve_s3_buckets({"buckets" => vault[:buckets]})
 else
     buckets = retrieve_s3_buckets(node['s3fs']['data'])
