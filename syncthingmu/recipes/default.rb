@@ -8,7 +8,7 @@
 #
 
 include_recipe 'chef-vault'
-vault = chef_vault_item(node[:s3fs][:vault], node[:s3fs][:vaultitem])
+vault = chef_vault_item(node[:syncthingmu][:vault], node[:syncthingmu][:vaultitem])
 
 node['syncthingmu']['packages'].each do |pkg|
   package pkg
@@ -55,11 +55,11 @@ class Stuser
   end
 end
 
-if ChefVault::Item.vault?(node[:syncthingmu][:vault], node.name)
-  st_users = retrieve_st_users({"users" => vault[:syncthing_users]})
-else
+#if ChefVault::Item.vault?(node[:syncthingmu][:vault], node.name)
+#  st_users = retrieve_st_users({"users" => vault[:syncthing_users]})
+#else
   st_users = retrieve_st_users(node['syncthingmu']['data'])
-end
+#end
 
 
 st_users.each do |st_user|

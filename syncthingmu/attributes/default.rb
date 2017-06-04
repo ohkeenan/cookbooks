@@ -20,5 +20,5 @@ default["syncthingmu"]["vault"] = "credentials"
 default["syncthingmu"]["vaultitem"] = node.name
 
 default["syncthingmu"]["data"] = {
-  "users" => ["ec2-user"]
+  "users" => [ "ec2-user" ]
 }
