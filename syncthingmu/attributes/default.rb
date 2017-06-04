@@ -1,7 +1,7 @@
 case node["platform"]
-  when "amazon"
-    default["syncthingmu"]["packages"] = %w{golang}
-  end
+
+when "amazon"
+  default["syncthingmu"]["packages"] = %w{golang}
 end
 
 # Going to assume this is true unless you make a pkg
