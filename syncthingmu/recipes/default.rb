@@ -9,7 +9,7 @@
 
 include_recipe 'chef-vault'
 
-if ( node["syncthingmu"]["vault"] && node["syncthingmu"]["vaultitem"] )
+if ( node["syncthingmu"]["vault"].nil? && node["syncthingmu"]["vaultitem"].nil? )
   vault = chef_vault_item(node[:syncthingmu][:vault], node[:syncthingmu][:vaultitem])
 end
 
@@ -58,7 +58,7 @@ class Stuser
   end
 end
 
-if ( node["syncthingmu"]["vault"] && node["syncthingmu"]["vaultitem"] )
+if ( node["syncthingmu"]["vault"].nil? && node["syncthingmu"]["vaultitem"].nil? )
   st_users = retrieve_st_users({"users" => vault[:syncthing_users]})
 else
   st_users = retrieve_st_users(node['syncthingmu']['data'])
