@@ -31,7 +31,7 @@ end
 def retrieve_st_users(st_data)
   st_users = []
 
-  st_data['users'].each do |st_users|
+  st_data['users'].each do |st_user|
     st_user = Stuser.new(st_user, node)
     st_users << {
       :name => st_user.name
