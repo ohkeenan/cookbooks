@@ -58,7 +58,7 @@ end
 if ChefVault::Item.vault?(node[:syncthingmu][:vault], node.name)
   st_users = retrieve_st_users({"users" => vault[:syncthing_users]})
 else
-  st_users = retrieve_st_users(node['syncthingmu']['users'])
+  st_users = retrieve_st_users(node['syncthingmu']['data'])
 end
 
 
