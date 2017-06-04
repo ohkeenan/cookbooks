@@ -9,7 +9,7 @@
 
 include_recipe 'chef-vault'
 
-unless node["syncthingmu"]["vault"].nil? or node["syncthingmu"]["vaultitem"].nil?
+if !node["syncthingmu"]["vault"]? || !node["syncthingmu"]["vaultitem"]?
   vault = chef_vault_item(node[:syncthingmu][:vault], node[:syncthingmu][:vaultitem])
 end
 
