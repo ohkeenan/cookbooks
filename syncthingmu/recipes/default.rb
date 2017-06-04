@@ -23,7 +23,7 @@ if node['syncthingmu']['build_from_source'] == true
       go run build.go
       cp bin/* /usr/bin/
     "
-    only_if Gem::Version.new(`go version|cut -f3 -d" "|tr -d "go"`) >= Gem::Version.new(node[:syncthingmu][:go_version])
+    #only_if Gem::Version.new(`go version|cut -f3 -d" "|tr -d "go"`) >= Gem::Version.new(node[:syncthingmu][:go_version])
     not_if { File.exists?("/usr/bin/syncthing") }
   end
 end
