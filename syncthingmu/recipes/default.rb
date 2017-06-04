@@ -9,9 +9,7 @@
 
 include_recipe 'chef-vault'
 
-if ( node["syncthingmu"]["vault"].nil? && node["syncthingmu"]["vaultitem"].nil? )
   vault = chef_vault_item(node[:syncthingmu][:vault], node[:syncthingmu][:vaultitem])
-end
 
 node['syncthingmu']['packages'].each do |pkg|
   package pkg
