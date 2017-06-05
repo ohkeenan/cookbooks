@@ -80,6 +80,7 @@ st_users.each do |st_user|
     action :create
   end
   execute "syncthing for #{st_user[:name]}" do
+    case node["platform"]
     when "amazon"
       command "USER=#{st_user[:name]} /etc/init.d/syncthing start"
     end
