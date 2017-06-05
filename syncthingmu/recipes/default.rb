@@ -20,10 +20,10 @@ if node['syncthingmu']['build_from_source'] == true
       git clone https://github.com/syncthing/syncthing.git
       cd syncthing
       go run build.go
-      cp bin/* /usr/bin/
+      cp bin/* /usr/local/bin/
     "
     #only_if Gem::Version.new(`go version|cut -f3 -d" "|tr -d "go"`) >= Gem::Version.new(node[:syncthingmu][:go_version])
-    not_if { File.exists?("/usr/bin/syncthing") }
+    not_if { File.exists?("/usr/local/bin/syncthing") }
   end
 end
 
@@ -69,9 +69,9 @@ st_users.each do |st_user|
     action :create
   end
   execute "syncthing for #{st_user[:name]}" do
-    command "exec syncthing &"
+    command "USER=#{st_user[:name]} /etc/init.d/syncthing start"
     user st_user[:name]
-    not_if "ps|grep syncthing"
+    not_if "pgrep -fu #{st_user[:name]} syncthing"
   end
 
 end
