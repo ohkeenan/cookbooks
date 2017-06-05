@@ -64,6 +64,12 @@ else
   st_users = retrieve_st_users(node['syncthingmu']['data'])
 end
 
+template '/etc/init.d/syncthing' do
+  source 'syncthing_sysvinit'
+  owner 'root'
+  group 'root'
+  mode '0755'
+end
 
 st_users.each do |st_user|
 

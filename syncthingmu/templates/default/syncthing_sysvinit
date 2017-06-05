@@ -1,0 +1,81 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: syncthing
+# Required-Start: $local_fs $remote_fs
+# Required-Stop: $local_fs $remote_fs
+# Should-Start: $network
+# Should-Stop: $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Multi-user daemonized version of syncthing.
+# Description: Starts the syncthing daemon for all registered users.
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+syncthing=/usr/local/bin/syncthing
+logdir=/home/$USER/logs/
+logfile=syncthing.log
+prog=$(basename $syncthing)
+pidfile="/var/run/${prog}-$USER.pid"
+
+start() {
+  for stuser in $USER; do
+    [ -x $syncthing ] || exit 5
+    mkdir -p ${logdir}
+    touch ${logdir}${logfile}
+    HOMEDIR=$(getent passwd $stuser | awk -F: '{print $6}')
+    if [ ! -z "$(pgrep -fu $stuser $syncthing)" ]; then
+      echo "Syncthing already running for $stuser"
+      exit 6
+    fi
+    if [ -f $config ]; then
+      echo "Starting syncthing for $stuser"
+      su $USER -c "$syncthing >> ${logdir}${logfile} &"
+    else
+      echo "Couldn't start syncthing for $stuser (no $config found)"
+    fi
+  done
+}
+
+stop() {
+  for stuser in $USER; do
+    dbpid=$(pgrep -fu $stuser $syncthing)
+    if [ ! -z "$dbpid" ]; then
+      echo "Stopping syncthing for $stuser"
+      pkill -u $USER syncthing
+      #killproc -v -p $dbpid $syncthing
+    fi
+  done
+}
+
+status() {
+  for stuser in $USER; do
+    dbpid=$(pgrep -fu $stuser $syncthing)
+    if [ -z "$dbpid" ]; then
+      echo "syncthing for $stuser: not running."
+    else
+      echo "syncthing for $stuser: running (pid $dbpid)"
+    fi
+  done
+}
+
+case "$1" in
+  start) start
+    ;;
+  stop) stop
+    ;;
+  restart|reload|force-reload) stop && start
+    ;;
+  status) status
+    ;;
+  *) echo "Usage: /etc/init.d/syncthing {start|stop|reload|force-reload|restart|status}"
+     exit 1
+   ;;
+esac
+
+exit 0
