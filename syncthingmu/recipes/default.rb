@@ -17,6 +17,8 @@ if node['syncthingmu']['build_from_source'] == true
   bash "install syncthing" do
     cwd Chef::Config[:file_cache_path]
     code "
+      mkdir -p ~/src/github.com/syncthing
+      cd ~/src/github.com/syncthing
       git clone https://github.com/syncthing/syncthing.git
       cd syncthing
       go run build.go
