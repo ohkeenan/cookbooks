@@ -1,0 +1,53 @@
+{
+  "name": "xml_file",
+  "description": "Provides xml_file resource-provider",
+  "long_description": "## xml_file - Cookbook\n\n`xml_file` resource-provider to manage XML files.\n\n### Description\n\n`xml_file` resource allows managing XML files where only parts of the file's\ncontent is controlled. Users can specify `XPath` targets and expected content\nat those targets.\n\n### Usage\n`xml_file` resource allows different attributes to specify\npartial content.\n\n- 'partial' attribute to add a XML fragments. Following example will\ninsert `part.xml` (present in `files/default` directory of the consumer cookbook) at '/parent/child' XPath target's last element.\nContent of _whole.xml_\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project name=\"\">\n  <repo type=\"git\"></repo>\n  <maintainers>\n    <maintainer>Hendrix</maintainer>\n    <maintainer>Morrison</maintainer>\n  </maintainers>\n<project>\n```\n\nContent of _part.xml_\n```xml\n<issuetracker>\n  <name>Jira</name>\n  <url>http://example.com</url>\n</issuetracker>\n```\n*xml_file* resource declaration:\n```ruby\nxml_file '/opt/whole.xml' do\n  partial '//project', 'part.xml'\n  owner 'root'\n  group 'root'\n  mode 0644\nend\n```\nwill change _whole.xml_ file to:\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project name=\"\">\n  <repo type=\"git\"></repo>\n  <maintainers>\n    <maintainer>Hendrix</maintainer>\n    <maintainer>Morrison</maintainer>\n  </maintainers>\n  <issuetracker>\n    <name>Jira</name>\n    <url>http://example.com</url>\n  </issuetracker>\n<project>\n```\n`before` or `after` keys can be specified alongside the XPath values\nto insert the elements at certain position with respective to their siblings.\n\n- The 'attribute' method allows setting the value of an XML element's attribute.\nFollowing is an example:\n```ruby\nxml_file '/opt/whole.xml' do\n  attribute '//project/repo', 'type', 'svn'\n  owner 'root'\n  group 'root'\n  mode 0644\nend\n```\nWill result:\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project name=\"\">\n  <repo type=\"svn\"></repo>\n  <maintainers>\n    <maintainer>Hendrix</maintainer>\n    <maintainer>Morrison</maintainer>\n  </maintainers>\n<project>\n```\n- The 'text' method will set the text content of an XML element. Following example:\n```ruby\nxml_file '/opt/whole.xml' do\n  text '//maintainer[last()]', 'Ray'\n  owner 'root'\n  group 'root'\n  mode 0644\nend\n```\nwill result:\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project name=\"\">\n  <repo type=\"svn\"></repo>\n  <maintainers>\n    <maintainer>Hendrix</maintainer>\n    <maintainer>Ray</maintainer>\n  </maintainers>\n<project>\n```\n- The 'remove' method will remove all matching xpath elements: Following example:\n```ruby\nxml_file '/opt/whole.xml' do\n  remove '//maintainer'\nend\n```\nwill result:\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project name=\"\">\n  <repo type=\"svn\"></repo>\n  <maintainers>\n  </maintainers>\n<project>\n```\n\nAll methods can be combined. When used in combination, partials are\nprocessed before `text` and `attribute`, hence they can refer to XPath introduced by partials.\n\n`xml_file` resource only supports :edit action. Its written in\nREXML and should be portable across platforms.\n\n## License\n[Apache 2](http://www.apache.org/licenses/LICENSE-2.0)\n\n## Contributing\n\n1. Fork it ( https://github.com/GoatOS/xml_file/fork )\n2. Create your feature branch (`git checkout -b my-new-feature`)\n3. Commit your changes (`git commit -am 'Add some feature'`)\n4. Push to the branch (`git push origin my-new-feature`)\n5. Create a new Pull Request\n",
+  "maintainer": "Ranjib Dey",
+  "maintainer_email": "ranjib@linux.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "oracle": ">= 0.0.0",
+    "suse": ">= 0.0.0",
+    "freebsd": ">= 0.0.0",
+    "openbsd": ">= 0.0.0",
+    "mac_os_x": ">= 0.0.0",
+    "mac_os_x_server": ">= 0.0.0",
+    "windows": ">= 0.0.0",
+    "aix": ">= 0.0.0"
+  },
+  "dependencies": {
+
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "0.3.0",
+  "source_url": "https://github.com/GoatOS/xml_file",
+  "issues_url": "https://github.com/GoatOS/xml_file/issues"
+}

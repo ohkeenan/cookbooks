@@ -1,0 +1,6 @@
+AllCops:
+  Exclude:
+    - .bundle/**/*
+LineLength:
+  Max: 120
+
