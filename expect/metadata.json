@@ -1,0 +1,61 @@
+{
+  "name": "expect",
+  "description": "Installs/Configures expect package",
+  "long_description": "# Expect Cookbook\n[![Chef cookbook](https://img.shields.io/cookbook/v/expect.svg)](https://supermarket.chef.io/cookbooks/expect)\n[![Build Status](https://travis-ci.org/rjaros87/chef-expect.svg?branch=master)](https://travis-ci.org/rjaros87/chef-expect)\n\n# Description\n\nThis cookbook will install [Expect package](http://expect.sourceforge.net/).\n> Expect is a tool for automating interactive applications such as telnet, ftp, passwd, fsck, rlogin, tip, etc. Expect really makes this stuff trivial. Expect is also useful for testing these same applications. And by adding Tk, you can also wrap interactive applications in X11 GUIs.\n> Expect can make easy all sorts of tasks that are prohibitively difficult with anything else. You will find that Expect is an absolutely invaluable tool - using it, you will be able to automate tasks that you've never even thought of before - and you'll be able to do this automation quickly and easily.\n\nExpect requires Tcl (tool command language). This cookbook will provide Tcl package if necessary (currently only Windows platform requires it).\n\n### Platforms\n\n- Ubuntu\n- CentOS\n- RedHat\n- Fedora\n- Mac OS X\n- Windows\n\n### Chef\n\n- Chef 12 or later\n\n## Attributes\n\n### expect::default\n\n| Key                                             | Type    | Description                                             | Platform | Default                            |\n| ------------------------------------------------| ------- | --------------------------------------------------------| -------- | -----------------------------------|\n| `default['expect']['include_homebrew']`         | Boolean | Include homebrew recipe for installing brew on Mac OS   | Mac OS   | `true`                             |\n| `default['expect']['cygwin']['from_system']`    | Boolean | Use the Cygwin from system                              | Windows  | `false`                            |\n| `default['expect']['cygwin']['home']`           | String  | Installation path for the Cygwin                        | Windows  | `'C:\\\\cygwin'`                     |\n| `default['expect']['cygwin']['site']`           | String  | Server where the Cygwin should search for the packages  | Windows  | `'http://cygwin.mirrors.pair.com'` |\n\n## Recipes\n\n### expect::default\n\nInstalls Expect package on node and if the node platform is Windows then the recipe also installs [Cygwin](https://www.cygwin.com/) component.\n\n### Usage - expect::default\n\nJust include `expect` in your node's `run_list`:\n\n```json\n{\n  \"name\":\"my_node\",\n  \"run_list\": [\n    \"recipe[expect]\"\n  ]\n}\n```\n\n## Resources\n\nThis cookbook provides a script provider called `expect_script` which will execute `expect` script using Tcl according to current OS. \n\n| Property      | Type              | Description                                                                  | Default                            | Required |\n| --------------| ----------------- | ---------------------------------------------------------------------------- | -----------------------------------| -------- |\n| `cwd`         | String            | The current working directory                                                | `true`                             | false    |\n| `code`        | String            | A quoted string of code to be executed                                       | `false`                            | true     |\n| `environment` | Hash              | A Hash of environment variables in the form of ({\"ENV_VARIABLE\" => \"VALUE\"}) | `'C:\\\\cygwin'`                     | false    |\n| `user`        | [String, Integer] | The user name or user ID that should be changed before running a command     | `nil`                              | false    |\n| `group`       | [String, Integer] | The group name or group ID that must be changed before running a command     | `nil`                              | false    |\n\n### Usage expect_script\n\n```ruby\nexpect_script 'Example expect script with system command' do\n  code <<-EOH\n    spawn ftp\n    set timeout 30\n    expect {\n      -regexp \"ftp.*\" {\n        exp_send \"bye\\r\"\n        exp_continue\n      }\n      eof\n    }\n  EOH\nend\n```\n\n```ruby\nexpect_script 'Example expect script with bash script' do\n  cwd '/'\n  environment 'PATH' => \"#{ENV['PATH']}:/tmp/test\"\n  code <<-EOH\n    spawn test.sh\n    set timeout 30\n    expect {\n      -regexp \"Would you like to delete your all files (yes/no)?.*\" {\n        exp_send \"no\\r\"\n        exp_continue\n      }\n      eof\n    }\n  EOH\n  user 'root'\n  group 'root'\nend\n```\n\n## Contributing\n\n* [Contribution Guidelines](https://github.com/rjaros87/chef-expect/blob/master/CONTRIBUTING.md)\n\n## License and Authors\n\nAuthors: Radoslaw Jaros\n",
+  "maintainer": "Radoslaw Jaros",
+  "maintainer_email": "jaros_radek@op.pl",
+  "license": "Apache 2.0",
+  "platforms": {
+    "debian": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "windows": ">= 0.0.0",
+    "mac_os_x": ">= 0.0.0"
+  },
+  "dependencies": {
+    "windows": ">= 1.44.1",
+    "homebrew": ">= 2.1.0",
+    "cygwin": "~> 0.7.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "2.0.0",
+  "source_url": "https://github.com/rjaros87/chef-expect",
+  "issues_url": "https://github.com/rjaros87/chef-expect/issues",
+  "privacy": false,
+  "chef_versions": [
+    [
+      ">= 12.11"
+    ]
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}

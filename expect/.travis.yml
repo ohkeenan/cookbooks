@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - 2
+before_install:
+  - gem install bundler
+install:
+  - bundle install --without integration
+script:
+  - bundle exec rake

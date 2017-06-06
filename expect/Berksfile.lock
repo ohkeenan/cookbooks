@@ -1,0 +1,29 @@
+DEPENDENCIES
+  expect
+    path: .
+    metadata: true
+
+GRAPH
+  build-essential (6.0.2)
+    compat_resource (>= 12.10)
+    mingw (>= 1.1)
+    seven_zip (>= 0.0.0)
+  chef_handler (1.4.0)
+  compat_resource (12.10.7)
+  cygwin (0.7.0)
+    windows (> 0.0)
+    windows_firewall (~> 3.0.0)
+  expect (2.0.0)
+    cygwin (~> 0.7.0)
+    homebrew (>= 2.1.0)
+    windows (>= 1.44.1)
+  homebrew (2.1.0)
+    build-essential (>= 2.1.2)
+  mingw (1.2.2)
+    compat_resource (>= 0.0.0)
+    seven_zip (>= 0.0.0)
+  seven_zip (2.0.1)
+    windows (>= 1.2.2)
+  windows (1.44.1)
+    chef_handler (>= 0.0.0)
+  windows_firewall (3.0.0)

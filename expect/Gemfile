@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+
+gem 'rake', '~> 11.2'
+gem 'tailor', '~> 1.4'
+gem 'foodcritic', '~> 7.0'
+gem 'rubocop', '~> 0.41.2'
+gem 'chef', '~> 12.11'
+gem 'berkshelf', '~> 4.3', '>= 4.3.5'
+
+group :integration do
+  gem 'test-kitchen', '~> 1.10'
+  gem 'kitchen-vagrant', '~> 0.20.0'
+end
