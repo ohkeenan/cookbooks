@@ -11,6 +11,8 @@ default["syncthingmu"]["go_version"] = "1.7.5"
 default["syncthingmu"]["storage_dir"] = '/mnt'
 default["syncthingmu"]["multi_user"] = false
 
+default["syncthingmu"]["port_range"] = "88"
+
 default["syncthingmu"]["version"] = ''
 default["syncthingmu"]["options"] = ''
 
