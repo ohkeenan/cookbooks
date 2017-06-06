@@ -9,6 +9,7 @@ source_url       'https://github.com/rjaros87/chef-expect'
 issues_url       'https://github.com/rjaros87/chef-expect/issues'
 
 %w(
+  amazon
   debian
   ubuntu
   centos

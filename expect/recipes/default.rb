@@ -18,7 +18,7 @@
 #
 
 case node['platform_family']
-when 'debian', 'rhel'
+when 'debian', 'rhel', 'amazon'
   package 'expect'
 when 'mac_os_x'
   include_recipe 'homebrew' if node['expect']['include_homebrew']
