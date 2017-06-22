@@ -110,3 +110,18 @@ execute 'rm_ajenti_website_json' do
 	action :nothing
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
+
+
+if node['ajenti1']['use_ssl']
+	if node['ajenti1']['selfsign']
+		openssl_x509 "#{node[:ajenti1][:key_dir]}nginx-selfsigned.pem" do
+		  common_name node['ajenti1']['ssl_commonname']
+		  org node['ajenti1']['ssl_org']
+		  org_unit node['ajenti1']['ssl_orgunit']
+		  country node['ajenti1']['ssl_country']
+			not_if { ::File.exists?("#{node[:ajenti1][:key_dir]}nginx-selfsigned.pem")}
+		end
+	end
+
+
+end

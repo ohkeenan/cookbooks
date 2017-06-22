@@ -58,12 +58,6 @@ bash "extract seafile" do
   not_if { File.exists?("#{node[:seafile][:path]}/installed/seafile-server_#{node[:seafile][:version]}_#{node[:seafile][:arch]}.tar.gz") }
 end
 
-if node['seafile']['use_ssl']
-  #    openssl genrsa -out privkey.pem 2048
-  #    openssl req -new -x509 -key privkey.pem -out cacert.pem -days 1095
-  #
-end
-
 template '/etc/init.d/seafile-server' do
   source 'seafile_init.erb'
   owner 'root'
