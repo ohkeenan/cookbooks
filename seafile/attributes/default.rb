@@ -6,18 +6,29 @@
 # All rights reserved - Do Not Redistribute
 #
 
+default['seafile']['version'] = '6.0.9'
+default['seafile']['arch'] = 'x86-64'
 
+default['seafile']['user'] = 'seafile'
+default['seafile']['path'] = '/srv/seafile'
 
-default["seafile"]["version"] = "6.0.9"
-default["seafile"]["arch"] = "x86-64"
+default['seafile']['use_ssl'] = true
+default['seafile']['client_key'] = '/etc/ssl/cacert.pem'
+default['seafile']['private_key'] = '/etc/ssl/privkey.pem'
 
-default["seafile"]["user"] = "seafile"
-default["seafile"]["path"] = "/srv/seafile"
+default['seafile']['fqdn'] = 'thkeenan.com'
+default['seafile']['subdomain'] = 'seafile'
+default['seafile']['server_name'] = node.name
 
-default["seafile"]["use_vault"] = false
-default["seafile"]["vault"] = "" #credentials
-default["seafile"]["vaultitem"] = "" #node.name
+# nginx
+default['seafile']['fastcgi_port'] = '9000'
 
-default["seafile"]["data"] = {
-  "users" => [ "ec2-user" ]
+default['seafile']['seahub_port'] = '9082'
+
+default['seafile']['use_vault'] = true
+default['seafile']['vault'] = 'credentials' #credentials
+default['seafile']['vaultitem'] = node.name
+
+default['seafile']['data'] = {
+  'users' => [ 'ec2-user' ]
 }

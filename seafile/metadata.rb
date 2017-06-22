@@ -9,3 +9,4 @@ version          '0.1.0'
 supports 'amazon'
 
 depends 'chef-vault'
+depends 'poise-python'
