@@ -171,6 +171,7 @@ if node['seafile']['use_vault']
                                  "FILE_SERVER_ROOT = 'https:\/\/#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}\/seafhttp'")
       fe.write_file
     end
+		only_if { File.exists?("#{node[:seafile][:path]}/conf/seahub_settings.py") }
     not_if File.open("#{node[:seafile][:path]}/conf/seahub_settings.py").grep(/"FILE_SERVER_ROOT = "/)
   end
 
