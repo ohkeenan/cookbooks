@@ -150,8 +150,8 @@ if node['seafile']['use_vault']
     EOH
     user 'seafile'
     group 'seafile'
-		notifies :run, 'execute[correct_service_url]', :immediately
-		notifies :run, 'execute[correct_seahub_settings]', :immediately
+		notifies :run, 'ruby_block[correct_service_url]', :immediately
+		notifies :run, 'ruby_block[correct_seahub_settings]', :immediately
 
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
