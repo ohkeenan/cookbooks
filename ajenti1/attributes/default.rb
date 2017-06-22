@@ -16,6 +16,7 @@ default['ajenti1']['use_ssl'] = true
 default['ajenti1']['selfsign'] = true
 default['ajenti1']['key_dir'] = '/etc/ssl/'
 
+# see https://github.com/chef-cookbooks/openssl
 default['ajenti1']['ssl_commonname'] = ""
 default['ajenti1']['ssl_org'] = ""
 default['ajenti1']['ssl_orgunit'] = ""
