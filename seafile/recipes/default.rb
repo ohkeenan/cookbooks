@@ -150,10 +150,13 @@ if node['seafile']['use_vault']
     EOH
     user 'seafile'
     group 'seafile'
+		notifies :run, 'execute[correct_service_url]', :immediately
+		notifies :run, 'execute[correct_seahub_settings]', :immediately
+
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
 
-  ruby_block "correct seahub SERVICE_URL for NGINX" do
+  ruby_block "correct_service_url" do
     block do
       fe = Chef::Util::FileEdit.new("#{node[:seafile][:path]}/conf/ccnet.conf")
       fe.search_file_replace_line(/SERVICE_URL =/,
@@ -162,9 +165,10 @@ if node['seafile']['use_vault']
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/ccnet.conf") }
     not_if File.open("#{node[:seafile][:path]}/conf/ccnet.conf").grep(/"#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}"/)
+		action :nothing
   end
 
-  ruby_block "correct seahub_settings for NGINX" do
+  ruby_block "correct_seahub_settings" do
     block do
       fe = Chef::Util::FileEdit.new("#{node[:seafile][:path]}/conf/seahub_settings.py")
       fe.insert_line_if_no_match(/"FILE_SERVER_ROOT = 'https:\/\/#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}\/seafhttp'"/,
@@ -173,6 +177,7 @@ if node['seafile']['use_vault']
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/seahub_settings.py") }
     not_if File.open("#{node[:seafile][:path]}/conf/seahub_settings.py").grep(/"FILE_SERVER_ROOT = "/)
+		action :nothing
   end
 
 
