@@ -164,7 +164,7 @@ if node['seafile']['use_vault']
       fe.write_file
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/ccnet.conf") }
-    not_if File.open("#{node[:seafile][:path]}/conf/ccnet.conf").grep(/"#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}"/)
+    #not_if File.open("#{node[:seafile][:path]}/conf/ccnet.conf").grep(/"#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}"/)
 		action :nothing
   end
 
@@ -176,7 +176,7 @@ if node['seafile']['use_vault']
       fe.write_file
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/seahub_settings.py") }
-    not_if File.open("#{node[:seafile][:path]}/conf/seahub_settings.py").grep(/"FILE_SERVER_ROOT = "/)
+    #not_if File.open("#{node[:seafile][:path]}/conf/seahub_settings.py").grep(/"FILE_SERVER_ROOT = "/)
 		action :nothing
   end
 
