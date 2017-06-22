@@ -160,6 +160,7 @@ if node['seafile']['use_vault']
         "SERVICE_URL = https://#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}")
       fe.write_file
     end
+		only_if { File.exists?("#{node[:seafile][:path]}/conf/ccnet.conf") }
     not_if File.open("#{node[:seafile][:path]}/conf/ccnet.conf").grep(/"#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}"/)
   end
 
