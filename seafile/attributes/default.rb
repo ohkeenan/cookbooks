@@ -12,10 +12,6 @@ default['seafile']['arch'] = 'x86-64'
 default['seafile']['user'] = 'seafile'
 default['seafile']['path'] = '/srv/seafile'
 
-default['seafile']['use_ssl'] = true
-default['seafile']['client_key'] = '/etc/ssl/cacert.pem'
-default['seafile']['private_key'] = '/etc/ssl/privkey.pem'
-
 default['seafile']['fqdn'] = 'thkeenan.com'
 default['seafile']['subdomain'] = 'seafile'
 default['seafile']['server_name'] = node.name

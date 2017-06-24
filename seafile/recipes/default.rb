@@ -160,7 +160,7 @@ if node['seafile']['use_vault']
     block do
       fe = Chef::Util::FileEdit.new("#{node[:seafile][:path]}/conf/ccnet.conf")
       fe.search_file_replace_line(/SERVICE_URL =/,
-        "SERVICE_URL = https://#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}")
+        "SERVICE_URL = https://#{node[:seafile][:subdomain]}.#{vault[:domain]}")
       fe.write_file
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/ccnet.conf") }
@@ -171,8 +171,8 @@ if node['seafile']['use_vault']
   ruby_block 'correct_seahub_settings' do
     block do
       fe = Chef::Util::FileEdit.new("#{node[:seafile][:path]}/conf/seahub_settings.py")
-      fe.insert_line_if_no_match(/"FILE_SERVER_ROOT = 'https:\/\/#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}\/seafhttp'"/,
-                                 "FILE_SERVER_ROOT = 'https:\/\/#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}\/seafhttp'")
+      fe.insert_line_if_no_match(/"FILE_SERVER_ROOT = 'https:\/\/#{node[:seafile][:subdomain]}.#{vault[:domain]}\/seafhttp'"/,
+                                 "FILE_SERVER_ROOT = 'https:\/\/#{node[:seafile][:subdomain]}.#{vault[:domain]}\/seafhttp'")
       fe.write_file
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/seahub_settings.py") }
