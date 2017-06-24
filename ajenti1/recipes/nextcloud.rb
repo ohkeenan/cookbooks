@@ -31,7 +31,7 @@ end
 template '/root/nextcloud.json' do
   source 'ajenti_nextcloud.json.erb'
 	variables( {:domain => vault[:domain]})
-  notifies :run, 'execute[ajenti_ipc_import_seafile]', :delayed
+  notifies :run, 'execute[ajenti_ipc_import_nextcloud]', :delayed
 	not_if { File.exist?("/etc/nginx/conf.d/nextcloud.conf" )}
 end
 
