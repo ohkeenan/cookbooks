@@ -97,23 +97,8 @@ template "/srv/#{vault[:domain]}/index.html" do
 	action :create_if_missing
 end
 
-execute 'import first website' do
-	command "ajenti-ipc v import /home/ec2-user/rt/website.json"
-	action :run
-	notifies :run, 'execute[rm_ajenti_website_json]', :immediately
-	notifies :run, 'execute[ajenti_v_apply]', :immediately
-	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
-end
-
-execute 'rm_ajenti_website_json' do
-	command "rm /home/ec2-user/rt/website.json"
-	action :nothing
-	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
-end
-
 execute 'ajenti_ipc_import_website' do
-  command "ajenti-ipc v import #{node.name}.json"
-	cwd "/root"
+  command "ajenti-ipc v import /root/#{node.name}.json"
   action :nothing
   notifies :run, 'execute[ajenti_v_apply]', :delayed
 end

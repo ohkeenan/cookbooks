@@ -18,8 +18,8 @@ default['ajenti1']['seafile_ssl_key'] = '/etc/ssl/certs/nginx-selfsigned.key'
 default['ajenti1']['seafile_ssl_cert'] = '/etc/ssl/certs/nginx-selfsigned.pem'
 
 
-default['ajenti1']['nextcloud_subdomain'] = 'nextcloud'
-default['ajenti1']['nextcloud_root'] = '/srv/nextcoud'
+default['ajenti1']['nextcloud_subdomain'] = 'cloud'
+default['ajenti1']['nextcloud_root'] = '/srv/nextcloud'
 default['ajenti1']['nextcloud_ssl_key'] = '/etc/ssl/certs/nginx-selfsigned.key'
 default['ajenti1']['nextcloud_ssl_cert'] = '/etc/ssl/certs/nginx-selfsigned.pem'
 
