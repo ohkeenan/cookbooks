@@ -113,7 +113,7 @@ execute 'rm_ajenti_website_json' do
 end
 
 bash 'ajenti_ipc_import_website' do
-  command "ajenti-ipc v import #{vault[:domain]}.json"
+  command "ajenti-ipc v import #{node.name}.json"
 	cwd "/root"
   action :nothing
   notifies :run, 'execute[ajenti_v_apply]', :delayed
