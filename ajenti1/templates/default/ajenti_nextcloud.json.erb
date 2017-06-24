@@ -1,0 +1,62 @@
+{
+    "ssl_header": "",
+    "maintenance_mode": false,
+    "locations": [
+        {
+            "custom_conf_override": false,
+            "path_append_pattern": false,
+            "pattern": "[^/]\\.php(/|$)",
+            "custom_conf": "fastcgi_split_path_info ^(.+\\.php)(/.*)$;\n",
+            "path": "",
+            "match": "regex",
+            "backend": {
+                "type": "php-fcgi",
+                "params": {
+                    "pm": "dynamic",
+                    "php_admin_values": "open_basedir = none;",
+                    "php_flags": ""
+                }
+            }
+        }
+    ],
+    "custom_conf": "",
+    "ssl_stapling_verify": "",
+    "owner": "root",
+    "custom_conf_toplevel": "server {\n        listen       80;\n        server_name  <%= node['ajenti1']['nextcloud_subdomain'] %>.<%= vault[:domain] %>;\n        rewrite ^ https://$http_host$request_uri? permanent;    # force redirect http to https\n        server_tokens off;\n}",
+    "ssl_session_cache": "",
+    "ssl_key_path": "<%= node['ajenti1']['nextcloud_ssl_key'] %>",
+    "ssl_protocols": "",
+    "ssl_prefer_server_ciphers": "",
+    "ssl_diffie_hellman_group": "",
+    "ssl_session_timeout": "",
+    "ssl_cert_path": "<%= node['ajenti1']['nextcloud_ssl_cert'] %>",
+    "name": "nextcloud",
+    "ssl_ciphers": "",
+    "ssl_stapling": "",
+    "enabled": true,
+    "extensions": {
+        "ajenti.plugins.vh.processes.ProcessesExtension": {
+            "processes": []
+        },
+        "ajenti.plugins.vh-mysql.mysql.MySQLExtension": {
+            "users": [],
+            "databases": []
+        }
+    },
+    "domains": [
+        {
+            "domain": "<%= node['ajenti1']['nextcloud_subdomain'] %>.<%= vault[:domain] %>"
+        }
+    ],
+    "root": "<%= node['ajenti1']['nextcloud_root'] %>",
+    "ports": [
+        {
+            "spdy": false,
+            "default": false,
+            "ssl": true,
+            "host": "*",
+            "http2": true,
+            "port": 443
+        }
+    ]
+}

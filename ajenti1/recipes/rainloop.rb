@@ -32,10 +32,13 @@ execute "chmod_rainloop" do
 	action :nothing
 end
 
-bash 'import first rainloop' do
-    code "ajenti-ipc v import /home/ec2-user/rt/rainloop.json && \
-						rm /home/ec2-user/rt/rainloop.json && \
-						ajenti-ipc v apply"
-    action :run
-    only_if { ::File.exists?('/home/ec2-user/rt/rainloop.json')}
+bash 'ajenti_ipc_import_rainloop' do
+  command 'ajenti-ipc v import /root/rainloop.json'
+  action :nothing
+  notifies :run, 'execute[ajenti_v_apply]', :delayed
+end
+
+template '/root/rainloop.json' do
+  source 'ajenti_rainloop.json.erb'
+  notifies :run, 'bash[ajenti_ipc_import_rainloop]', :delayed
 end

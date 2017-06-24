@@ -1,15 +1,18 @@
 #
 # Cookbook Name:: ajenti1
-# Recipe:: nextcloud
+# Recipe:: seafile
 #
 # Copyright 2017, Keenan Verbrugge
 #
 #
 
-bash 'import first seafile' do
-    code "ajenti-ipc v import /home/ec2-user/rt/seafile.json && \
-						rm /home/ec2-user/rt/seafile.json && \
-						ajenti-ipc v apply"
-    action :run
-    only_if { ::File.exists?('/home/ec2-user/rt/seafile.json')}
+bash 'ajenti_ipc_import_seafile' do
+  command 'ajenti-ipc v import /root/seafile.json'
+  action :nothing
+  notifies :run, 'execute[ajenti_v_apply]', :delayed
+end
+
+template '/root/seafile.json' do
+  source 'ajenti_seafile.json.erb'
+  notifies :run, 'bash[ajenti_ipc_import_seafile]', :delayed
 end

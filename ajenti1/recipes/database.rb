@@ -7,8 +7,7 @@
 #
 
 include_recipe 'chef-vault'
-
-vault = chef_vault_item(node[:s3fs][:vault],node.name)
+vault = chef_vault_item(node[:ajenti1][:vault], node[:ajenti1][:vaultitem])
 
 mysql_connection_info = {
   :host       => 'localhost',

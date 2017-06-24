@@ -6,11 +6,6 @@
 #
 #
 
-execute "update" do
-	command "yum update -y"
-	action :run
-end
-
 package ["php70-ctype","php70-dom","php70-gd","php70-mbstring","php70-pdo","php70-iconv","php70-json","php70-libxml","php70-posix","php70-zip","php70-zlib","php70-curl","php70-bz2","php70-mcrypt","php70-openssl","php70-intl","php70-fileinfo","php70-exif","php70-xml","php70-imagick","php70-json"]
 
 execute "download nextcloud" do
@@ -24,12 +19,15 @@ execute "chown nextcloud" do
 	not_if "ls -l /srv/nextcloud | grep -q www-data"
 end
 
-bash 'import first nextcloud' do
-    code "ajenti-ipc v import /home/ec2-user/rt/nextcloud.json && \
-						rm /home/ec2-user/rt/nextcloud.json && \
-						ajenti-ipc v apply"
-    action :run
-    only_if { ::File.exists?('/home/ec2-user/rt/nextcloud.json')}
+bash 'ajenti_ipc_import_nextcloud' do
+  command 'ajenti-ipc v import /root/nextcloud.json'
+  action :nothing
+  notifies :run, 'execute[ajenti_v_apply]', :delayed
+end
+
+template '/root/nextcloud.json' do
+  source 'ajenti_nextcloud.json.erb'
+  notifies :run, 'bash[ajenti_ipc_import_seafile]', :delayed
 end
 
 directory '/srv/nextcloud/data' do

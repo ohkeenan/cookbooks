@@ -7,7 +7,10 @@
 #
 
 include_recipe 'chef-vault'
-vault = chef_vault_item(node[:s3fs][:vault], node[:s3fs][:vaultitem])
+
+if node['ajenti1']['use_vault']
+	vault = chef_vault_item(node[:ajenti1][:vault], node[:ajenti1][:vaultitem])
+end
 
 
 execute "enable epel repository" do
@@ -111,6 +114,18 @@ execute 'rm_ajenti_website_json' do
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
 
+bash 'ajenti_ipc_import_website' do
+  command 'ajenti-ipc v import /root/website.json'
+  action :nothing
+  notifies :run, 'execute[ajenti_v_apply]', :delayed
+end
+
+template '/root/website.json' do
+  source 'ajenti_website.json.erb'
+  notifies :run, 'bash[ajenti_ipc_import_website]', :delayed
+	not_if { File.exist?("/etc/nginx/conf.d/#{vault[:domain]}.conf" )}
+end
+
 
 if node['ajenti1']['use_ssl']
 	if node['ajenti1']['selfsign']
@@ -119,7 +134,7 @@ if node['ajenti1']['use_ssl']
 		  org node['ajenti1']['ssl_org']
 		  org_unit node['ajenti1']['ssl_orgunit']
 		  country node['ajenti1']['ssl_country']
-			not_if { ::File.exists?("#{node[:ajenti1][:key_dir]}nginx-selfsigned.pem")}
+			not_if { ::File.exists?("#{node[:ajenti1][:key_dir]}/nginx-selfsigned.pem")}
 		end
 	end
 

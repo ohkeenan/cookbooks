@@ -12,9 +12,28 @@
 # default['ajenti1']['user'] = 'ajenti1'
 # default['ajenti1']['path'] = '/srv/ajenti1'
 
+default['ajenti1']['seafile_subdomain'] = 'seafile'
+default['ajenti1']['seafile_root'] = '/srv/seafile'
+default['ajenti1']['seafile_ssl_key'] = '/etc/ssl/certsnginx-selfsigned.key'
+default['ajenti1']['seafile_ssl_cert'] = '/etc/ssl/certsnginx-selfsigned.pem'
+
+
+default['ajenti1']['nextcloud_subdomain'] = 'nextcloud'
+default['ajenti1']['nextcloud_root'] = '/srv/nextcoud'
+default['ajenti1']['nextcloud_ssl_key'] = '/etc/ssl/certsnginx-selfsigned.key'
+default['ajenti1']['nextcloud_ssl_cert'] = '/etc/ssl/certsnginx-selfsigned.pem'
+
+
+default['ajenti1']['rainloop_subdomain'] = 'rainloop'
+default['ajenti1']['rainloop_root'] = '/srv/rainloop'
+default['ajenti1']['rainloop_ssl_key'] = '/etc/ssl/certsnginx-selfsigned.key'
+default['ajenti1']['rainloop_ssl_cert'] = '/etc/ssl/certsnginx-selfsigned.pem'
+
+
+
 default['ajenti1']['use_ssl'] = true
 default['ajenti1']['selfsign'] = true
-default['ajenti1']['key_dir'] = '/etc/ssl/'
+default['ajenti1']['key_dir'] = '/etc/ssl/certs'
 
 # see https://github.com/chef-cookbooks/openssl
 default['ajenti1']['ssl_commonname'] = ""
@@ -32,9 +51,9 @@ default['ajenti1']['ssl_country'] = ""
 #
 # default['ajenti1']['seahub_port'] = '9082'
 #
-# default['ajenti1']['use_vault'] = true
-# default['ajenti1']['vault'] = 'credentials' #credentials
-# default['ajenti1']['vaultitem'] = node.name
+default['ajenti1']['use_vault'] = true
+default['ajenti1']['vault'] = 'credentials' #credentials
+default['ajenti1']['vaultitem'] = node.name
 #
 # default['ajenti1']['data'] = {
 #   'users' => [ 'ec2-user' ]
