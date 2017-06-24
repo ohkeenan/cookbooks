@@ -152,10 +152,17 @@ if node['seafile']['use_vault']
     group 'seafile'
 		notifies :run, 'ruby_block[correct_service_url]', :immediately
 		notifies :run, 'ruby_block[correct_seahub_settings]', :immediately
+		notifies :run, 'execute[start_seahub]', :immediately
 		notifies :run, 'expect_script[first_run_seahub]', :immediately
 
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
+
+	execute 'first_run_seahub' do
+		command './seafile.sh start'
+		cwd "#{node[:seafile][:path]}/seafile-server-latest"
+	  action :nothing
+	end
 
   ruby_block 'correct_service_url' do
     block do
