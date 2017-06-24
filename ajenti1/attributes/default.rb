@@ -14,20 +14,20 @@
 
 default['ajenti1']['seafile_subdomain'] = 'seafile'
 default['ajenti1']['seafile_root'] = '/srv/seafile'
-default['ajenti1']['seafile_ssl_key'] = '/etc/ssl/certsnginx-selfsigned.key'
-default['ajenti1']['seafile_ssl_cert'] = '/etc/ssl/certsnginx-selfsigned.pem'
+default['ajenti1']['seafile_ssl_key'] = '/etc/ssl/certs/nginx-selfsigned.key'
+default['ajenti1']['seafile_ssl_cert'] = '/etc/ssl/certs/nginx-selfsigned.pem'
 
 
 default['ajenti1']['nextcloud_subdomain'] = 'nextcloud'
 default['ajenti1']['nextcloud_root'] = '/srv/nextcoud'
-default['ajenti1']['nextcloud_ssl_key'] = '/etc/ssl/certsnginx-selfsigned.key'
-default['ajenti1']['nextcloud_ssl_cert'] = '/etc/ssl/certsnginx-selfsigned.pem'
+default['ajenti1']['nextcloud_ssl_key'] = '/etc/ssl/certs/nginx-selfsigned.key'
+default['ajenti1']['nextcloud_ssl_cert'] = '/etc/ssl/certs/nginx-selfsigned.pem'
 
 
 default['ajenti1']['rainloop_subdomain'] = 'rainloop'
 default['ajenti1']['rainloop_root'] = '/srv/rainloop'
-default['ajenti1']['rainloop_ssl_key'] = '/etc/ssl/certsnginx-selfsigned.key'
-default['ajenti1']['rainloop_ssl_cert'] = '/etc/ssl/certsnginx-selfsigned.pem'
+default['ajenti1']['rainloop_ssl_key'] = '/etc/ssl/certs/nginx-selfsigned.key'
+default['ajenti1']['rainloop_ssl_cert'] = '/etc/ssl/certs/nginx-selfsigned.pem'
 
 
 

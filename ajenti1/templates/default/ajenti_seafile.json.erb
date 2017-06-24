@@ -20,7 +20,7 @@
     "custom_conf": "proxy_set_header X-Forwarded-For $remote_addr;\nadd_header Strict-Transport-Security \"max-age=31536000; includeSubDomains\";\nserver_tokens off;\n\n    location /seafhttp {\n        rewrite ^/seafhttp(.*)$ $1 break;\n        proxy_pass http://127.0.0.1:9082;\n        client_max_body_size 0;\n        proxy_connect_timeout  36000s;\n        proxy_read_timeout  36000s;\n        proxy_send_timeout  36000s;\n        send_timeout  36000s;\n    }\n    location /media {\n        root <%= node['ajenti1']['seafile_root'] %>/seafile-server-latest/seahub;\n    }",
     "ssl_stapling_verify": "",
     "owner": "root",
-    "custom_conf_toplevel": "server {\n        listen       80;\n        server_name  <%= node['ajenti1']['seafile_subdomain'] %>.<%= vault[:domain] %>;\n        rewrite ^ https://$http_host$request_uri? permanent;    # force redirect http to https\n        server_tokens off;\n}",
+    "custom_conf_toplevel": "server {\n        listen       80;\n        server_name  <%= node['ajenti1']['seafile_subdomain'] %>.<%= @domain %>;\n        rewrite ^ https://$http_host$request_uri? permanent;    # force redirect http to https\n        server_tokens off;\n}",
     "ssl_session_cache": "",
     "ssl_key_path": "<%= node['ajenti1']['seafile_ssl_key'] %>",
     "ssl_protocols": "",
@@ -43,7 +43,7 @@
     },
     "domains": [
         {
-            "domain": "<%= node['ajenti1']['seafile_subdomain'] %>.<%= vault[:domain] %>"
+            "domain": "<%= node['ajenti1']['seafile_subdomain'] %>.<%= @domain %>"
         }
     ],
     "root": "<%= node['ajenti1']['seafile_root'] %>",

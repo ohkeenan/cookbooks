@@ -5,6 +5,9 @@
 # Copyright 2017, Keenan Verbrugge
 #
 #
+include_recipe 'chef-vault'
+vault = chef_vault_item(node[:ajenti1][:vault], node[:ajenti1][:vaultitem])
+
 
 package ["php70-ctype","php70-dom","php70-gd","php70-mbstring","php70-pdo","php70-iconv","php70-json","php70-libxml","php70-posix","php70-zip","php70-zlib","php70-curl","php70-bz2","php70-mcrypt","php70-openssl","php70-intl","php70-fileinfo","php70-exif","php70-xml","php70-imagick","php70-json"]
 
@@ -19,7 +22,7 @@ execute "chown nextcloud" do
 	not_if "ls -l /srv/nextcloud | grep -q www-data"
 end
 
-bash 'ajenti_ipc_import_nextcloud' do
+execute 'ajenti_ipc_import_nextcloud' do
   command 'ajenti-ipc v import /root/nextcloud.json'
   action :nothing
   notifies :run, 'execute[ajenti_v_apply]', :delayed
@@ -27,7 +30,9 @@ end
 
 template '/root/nextcloud.json' do
   source 'ajenti_nextcloud.json.erb'
-  notifies :run, 'bash[ajenti_ipc_import_seafile]', :delayed
+	variables( {:domain => vault[:domain]})
+  notifies :run, 'execute[ajenti_ipc_import_seafile]', :delayed
+	not_if { File.exist?("/etc/nginx/conf.d/nextcloud.conf" )}
 end
 
 directory '/srv/nextcloud/data' do

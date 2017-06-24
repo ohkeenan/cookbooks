@@ -7,8 +7,7 @@
 #
 
 include_recipe 'chef-vault'
-
-	vault = chef_vault_item(node[:ajenti1][:vault], node[:ajenti1][:vaultitem])
+vault = chef_vault_item(node[:ajenti1][:vault], node[:ajenti1][:vaultitem])
 
 
 execute "enable epel repository" do
@@ -112,23 +111,24 @@ execute 'rm_ajenti_website_json' do
 	only_if { ::File.exists?('/home/ec2-user/rt/website.json')}
 end
 
-bash 'ajenti_ipc_import_website' do
+execute 'ajenti_ipc_import_website' do
   command "ajenti-ipc v import #{node.name}.json"
 	cwd "/root"
   action :nothing
   notifies :run, 'execute[ajenti_v_apply]', :delayed
 end
 
-template "/root/#{vault[:domain]}.json" do
+template "/root/#{node.name}.json" do
   source 'ajenti_website.json.erb'
-  notifies :run, 'bash[ajenti_ipc_import_website]', :delayed
-	not_if { File.exist?("/etc/nginx/conf.d/#{vault[:domain]}.conf" )}
+	variables( {:domain => vault[:domain]})
+  notifies :run, 'execute[ajenti_ipc_import_website]', :delayed
+	not_if { File.exist?("/etc/nginx/conf.d/#{node.name}.conf" )}
 end
 
 
 if node['ajenti1']['use_ssl']
 	if node['ajenti1']['selfsign']
-		openssl_x509 "#{node[:ajenti1][:key_dir]}nginx-selfsigned.pem" do
+		openssl_x509 "#{node[:ajenti1][:key_dir]}/nginx-selfsigned.pem" do
 		  common_name node['ajenti1']['ssl_commonname']
 		  org node['ajenti1']['ssl_org']
 		  org_unit node['ajenti1']['ssl_orgunit']

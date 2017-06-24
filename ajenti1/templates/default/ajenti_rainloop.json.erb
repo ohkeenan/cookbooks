@@ -22,7 +22,7 @@
     "custom_conf": "location / {\n\ttry_files $uri $uri/ /index.php?$args;\n}\nlocation ^~ /data {\n  deny all;\n}",
     "ssl_stapling_verify": "",
     "owner": "root",
-    "custom_conf_toplevel": "server {\n        listen       80;\n        server_name  <%= node['ajenti1']['rainloop_subdomain'] %>.<%= vault[:domain] %>;\n        rewrite ^ https://$http_host$request_uri? permanent;    # force redirect http to https\n        server_tokens off;\n}",
+    "custom_conf_toplevel": "server {\n        listen       80;\n        server_name  <%= node['ajenti1']['rainloop_subdomain'] %>.<%= @domain %>;\n        rewrite ^ https://$http_host$request_uri? permanent;    # force redirect http to https\n        server_tokens off;\n}",
     "ssl_session_cache": "",
     "ssl_key_path": "<%= node['ajenti1']['rainloop_ssl_key'] %>",
     "ssl_protocols": "",
@@ -41,7 +41,7 @@
     },
     "domains": [
         {
-            "domain": "<%= node['ajenti1']['rainloop_subdomain'] %>.<%= vault[:domain] %>"
+            "domain": "<%= node['ajenti1']['rainloop_subdomain'] %>.<%= @domain %>"
         }
     ],
     "root": "<%= node['ajenti1']['rainloop_root'] %>",

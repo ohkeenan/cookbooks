@@ -5,6 +5,9 @@
 # Copyright 2017, Keenan Verbrugge
 #
 #
+include_recipe 'chef-vault'
+vault = chef_vault_item(node[:ajenti1][:vault], node[:ajenti1][:vaultitem])
+
 
 package ["bsdtar"]
 
@@ -32,7 +35,7 @@ execute "chmod_rainloop" do
 	action :nothing
 end
 
-bash 'ajenti_ipc_import_rainloop' do
+execute 'ajenti_ipc_import_rainloop' do
   command 'ajenti-ipc v import /root/rainloop.json'
   action :nothing
   notifies :run, 'execute[ajenti_v_apply]', :delayed
@@ -40,5 +43,7 @@ end
 
 template '/root/rainloop.json' do
   source 'ajenti_rainloop.json.erb'
-  notifies :run, 'bash[ajenti_ipc_import_rainloop]', :delayed
+	variables( {:domain => vault[:domain]})
+  notifies :run, 'execute[ajenti_ipc_import_rainloop]', :delayed
+	not_if { File.exist?("/etc/nginx/conf.d/rainloop.conf" )}
 end
