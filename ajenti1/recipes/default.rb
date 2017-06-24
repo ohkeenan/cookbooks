@@ -8,9 +8,7 @@
 
 include_recipe 'chef-vault'
 
-if node['ajenti1']['use_vault']
 	vault = chef_vault_item(node[:ajenti1][:vault], node[:ajenti1][:vaultitem])
-end
 
 
 execute "enable epel repository" do
@@ -115,12 +113,13 @@ execute 'rm_ajenti_website_json' do
 end
 
 bash 'ajenti_ipc_import_website' do
-  command 'ajenti-ipc v import /root/website.json'
+  command "ajenti-ipc v import #{vault[:domain]}.json"
+	cwd "/root"
   action :nothing
   notifies :run, 'execute[ajenti_v_apply]', :delayed
 end
 
-template '/root/website.json' do
+template "/root/#{vault[:domain]}.json" do
   source 'ajenti_website.json.erb'
   notifies :run, 'bash[ajenti_ipc_import_website]', :delayed
 	not_if { File.exist?("/etc/nginx/conf.d/#{vault[:domain]}.conf" )}
