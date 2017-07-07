@@ -48,7 +48,7 @@ end
 bash "extract seafile" do
   cwd node[:seafile][:path]
   code "
-    wget https://bintray.com/artifact/download/seafile-org/seafile/seafile-server_#{node[:seafile][:version]}_#{node[:seafile][:arch]}.tar.gz
+    wget https://download.seadrive.org/seafile-server_#{node[:seafile][:version]}_#{node[:seafile][:arch]}.tar.gz
     tar -xzf seafile-server_*
     mkdir installed
     mv seafile-server_* installed
@@ -152,15 +152,18 @@ if node['seafile']['use_vault']
     group 'seafile'
 		notifies :run, 'ruby_block[correct_service_url]', :immediately
 		notifies :run, 'ruby_block[correct_seahub_settings]', :immediately
-		notifies :run, 'execute[start_seahub]', :immediately
+		notifies :run, 'execute[first_run_seafile]', :immediately
 		notifies :run, 'expect_script[first_run_seahub]', :immediately
 
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
 
-	execute 'first_run_seahub' do
+	execute 'first_run_seafile' do
 		command './seafile.sh start'
 		cwd "#{node[:seafile][:path]}/seafile-server-latest"
+		user 'seafile'
+    group 'seafile'
+
 	  action :nothing
 	end
 
@@ -191,18 +194,18 @@ if node['seafile']['use_vault']
 	expect_script 'first_run_seahub' do
     cwd "#{node[:seafile][:path]}/seafile-server-latest"
     code <<-EOH
-      spawn #{node[:seafile][:path]}/seafile-server-#{node[:seafile][:version]}/setup-seafile-mysql.sh start-fastcgi #{node[:seafile][:fastcgi_port]}
-      set timeout 30
+      spawn #{node[:seafile][:path]}/seafile-server-#{node[:seafile][:version]}/seahub.sh start-fastcgi #{node[:seafile][:fastcgi_port]}
+			set timeout 10
       expect {
-        -regexp "admin email.*" {
+        -regexp ".*admin email.*" {
           exp_send "#{vault[:seafile_admin]}\r"
           exp_continue
         }
-        -regexp "admin password.*" {
+        -regexp ".*admin password.*" {
           exp_send "#{vault[:seafile_pass]}\r"
           exp_continue
         }
-        -regexp "admin password again.*" {
+        -regexp ".*admin password again.*" {
           exp_send "#{vault[:seafile_pass]}\r"
           exp_continue
         }
@@ -212,7 +215,7 @@ if node['seafile']['use_vault']
     user 'seafile'
     group 'seafile'
 
-    action :nothing
+    action :run
   end
 
 
