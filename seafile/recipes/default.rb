@@ -79,6 +79,19 @@ end
 if node['seafile']['use_vault']
   vault = chef_vault_item(node[:seafile][:vault], node[:seafile][:vaultitem])
 
+	node.default["seafile"]["admin"]["email"] = vault[:seafile_admin]
+
+	template 'seahub_admin_txt' do
+		path "#{node[:seafile][:path]}/conf/admin.txt"
+		source "seahub_admin.erb"
+		owner "seafile"
+		group "seafile"
+		mode "0700"
+		variables({:seafile_admin => vault[:seafile_admin],
+								:seafile_pass => vault[:seafile_pass]})
+		action :nothing
+	end
+
   expect_script 'install seafile' do
     cwd "#{node[:seafile][:path]}/seafile-server-#{node[:seafile][:version]}"
     code <<-EOH
@@ -153,7 +166,8 @@ if node['seafile']['use_vault']
 		notifies :run, 'ruby_block[correct_service_url]', :immediately
 		notifies :run, 'ruby_block[correct_seahub_settings]', :immediately
 		notifies :run, 'execute[first_run_seafile]', :immediately
-		notifies :run, 'expect_script[first_run_seahub]', :immediately
+		notifies :create, 'template[seahub_admin_txt]', :immediately
+		notifies :run, 'execute[first_run_seahub]', :immediately
 
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
@@ -191,32 +205,15 @@ if node['seafile']['use_vault']
 		action :nothing
   end
 
-	expect_script 'first_run_seahub' do
-    cwd "#{node[:seafile][:path]}/seafile-server-latest"
-    code <<-EOH
-      spawn #{node[:seafile][:path]}/seafile-server-#{node[:seafile][:version]}/seahub.sh start-fastcgi #{node[:seafile][:fastcgi_port]}
-			set timeout 10
-      expect {
-        -regexp ".*admin email.*" {
-          exp_send "#{vault[:seafile_admin]}\r"
-          exp_continue
-        }
-        -regexp ".*admin password.*" {
-          exp_send "#{vault[:seafile_pass]}\r"
-          exp_continue
-        }
-        -regexp ".*admin password again.*" {
-          exp_send "#{vault[:seafile_pass]}\r"
-          exp_continue
-        }
-        eof
-      }
-    EOH
-    user 'seafile'
+	execute 'first_run_seahub' do
+		command "./seahub.sh start-fastcgi #{node[:seafile][:fastcgi_port]}"
+		cwd "#{node[:seafile][:path]}/seafile-server-latest"
+		user 'seafile'
     group 'seafile'
 
-    action :run
-  end
+	  action :nothing
+	end
+
 
 
   # finish this below

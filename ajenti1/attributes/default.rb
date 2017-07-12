@@ -10,7 +10,7 @@
 # default['ajenti1']['arch'] = 'x86-64'
 #
 # default['ajenti1']['user'] = 'ajenti1'
-# default['ajenti1']['path'] = '/srv/ajenti1'
+default['ajenti1']['website_root'] = '/srv/'
 
 default['ajenti1']['seafile_subdomain'] = 'seafile'
 default['ajenti1']['seafile_root'] = '/srv/seafile'
