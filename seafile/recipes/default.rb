@@ -42,6 +42,8 @@ directory node[:seafile][:path] do
   owner node[:seafile][:user]
   group node[:seafile][:user]
   mode '0750'
+	recursive true
+
   action :create
 end
 
@@ -168,6 +170,7 @@ if node['seafile']['use_vault']
 		notifies :run, 'execute[first_run_seafile]', :immediately
 		notifies :run, 'ruby_block[seafile_set_admin]', :immediately
 		notifies :run, 'execute[first_run_seahub]', :immediately
+		notifies :run, 'ruby_block[replace_old_check_init_admin]', :immediately
 
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
@@ -196,9 +199,9 @@ if node['seafile']['use_vault']
 	ruby_block 'seafile_set_admin' do
     block do
       fe = Chef::Util::FileEdit.new("#{node[:seafile][:path]}/seafile-server-latest/check_init_admin.py")
-      fe.search_file_replace_line(/ask_admin_email()/,
+      fe.search_file_replace(/ask_admin_email\(\)/,
         "\"#{vault[:seafile_admin]}\"")
-				fe.search_file_replace_line(/ask_admin_password()/,
+				fe.search_file_replace(/ask_admin_password\(\)/,
 	        "\"#{vault[:seafile_pass]}\"")
       fe.write_file
     end
@@ -206,6 +209,14 @@ if node['seafile']['use_vault']
 
 		action :nothing
   end
+
+	ruby_block 'replace_old_check_init_admin' do
+		block do
+			File.rename("#{node[:seafile][:path]}/seafile-server-latest/check_init_admin.py.old", "#{node[:seafile][:path]}/seafile-server-latest/check_init_admin.py")
+		end
+
+		action :nothing
+	end
 
   ruby_block 'correct_seahub_settings' do
     block do
@@ -215,7 +226,7 @@ if node['seafile']['use_vault']
       fe.write_file
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/seahub_settings.py") }
-    #not_if File.open("#{node[:seafile][:path]}/conf/seahub_settings.py").grep(/"FILE_SERVER_ROOT = "/)
+
 		action :nothing
   end
 
