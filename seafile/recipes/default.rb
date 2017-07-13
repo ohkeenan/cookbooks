@@ -41,7 +41,7 @@ end
 directory node[:seafile][:path] do
   owner node[:seafile][:user]
   group node[:seafile][:user]
-  mode '0750'
+  mode '0755'
 	recursive true
 
   action :create
@@ -57,6 +57,7 @@ bash "extract seafile" do
     cd seafile-server-*
   "
   user node[:seafile][:user]
+	group node[:seafile][:user]
   not_if { File.exists?("#{node[:seafile][:path]}/installed/seafile-server_#{node[:seafile][:version]}_#{node[:seafile][:arch]}.tar.gz") }
 end
 
@@ -82,17 +83,6 @@ if node['seafile']['use_vault']
   vault = chef_vault_item(node[:seafile][:vault], node[:seafile][:vaultitem])
 
 	node.default["seafile"]["admin"]["email"] = vault[:seafile_admin]
-
-	template 'seahub_admin_txt' do
-		path "#{node[:seafile][:path]}/conf/admin.txt"
-		source "seahub_admin.erb"
-		owner "seafile"
-		group "seafile"
-		mode "0750"
-		variables({:seafile_admin => vault[:seafile_admin],
-								:seafile_pass => vault[:seafile_pass]})
-		action :nothing
-	end
 
   expect_script 'install seafile' do
     cwd "#{node[:seafile][:path]}/seafile-server-#{node[:seafile][:version]}"
@@ -199,10 +189,10 @@ if node['seafile']['use_vault']
 	ruby_block 'seafile_set_admin' do
     block do
       fe = Chef::Util::FileEdit.new("#{node[:seafile][:path]}/seafile-server-latest/check_init_admin.py")
-      fe.search_file_replace(/ask_admin_email\(\)/,
-        "\"#{vault[:seafile_admin]}\"")
-				fe.search_file_replace(/ask_admin_password\(\)/,
-	        "\"#{vault[:seafile_pass]}\"")
+      fe.search_file_replace(/= ask_admin_email\(\)/,
+        "= \"#{vault[:seafile_admin]}\"")
+				fe.search_file_replace(/= ask_admin_password\(\)/,
+	        "= \"#{vault[:seafile_pass]}\"")
       fe.write_file
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/seafile-server-latest/check_init_admin.py") }
