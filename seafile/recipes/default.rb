@@ -86,7 +86,7 @@ if node['seafile']['use_vault']
 		source "seahub_admin.erb"
 		owner "seafile"
 		group "seafile"
-		mode "0700"
+		mode "0750"
 		variables({:seafile_admin => vault[:seafile_admin],
 								:seafile_pass => vault[:seafile_pass]})
 		action :nothing
@@ -168,6 +168,7 @@ if node['seafile']['use_vault']
 		notifies :run, 'execute[first_run_seafile]', :immediately
 		notifies :create, 'template[seahub_admin_txt]', :immediately
 		notifies :run, 'execute[first_run_seahub]', :immediately
+		notifies :delete, 'template[seahub_admin_txt]', :delayed
 
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
