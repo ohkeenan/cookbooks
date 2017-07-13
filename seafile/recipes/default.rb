@@ -166,9 +166,8 @@ if node['seafile']['use_vault']
 		notifies :run, 'ruby_block[correct_service_url]', :immediately
 		notifies :run, 'ruby_block[correct_seahub_settings]', :immediately
 		notifies :run, 'execute[first_run_seafile]', :immediately
-		notifies :create, 'template[seahub_admin_txt]', :immediately
+		notifies :run, 'ruby_block[seafile_set_admin]', :immediately
 		notifies :run, 'execute[first_run_seahub]', :immediately
-		notifies :delete, 'template[seahub_admin_txt]', :delayed
 
     not_if { Dir.exists?("#{node[:seafile][:path]}/conf") }
   end
@@ -191,6 +190,20 @@ if node['seafile']['use_vault']
     end
 		only_if { File.exists?("#{node[:seafile][:path]}/conf/ccnet.conf") }
     #not_if File.open("#{node[:seafile][:path]}/conf/ccnet.conf").grep(/"#{node[:seafile][:subdomain]}.#{node[:seafile][:fqdn]}"/)
+		action :nothing
+  end
+
+	ruby_block 'seafile_set_admin' do
+    block do
+      fe = Chef::Util::FileEdit.new("#{node[:seafile][:path]}/seafile-server-latest/check_init_admin.py")
+      fe.search_file_replace_line(/ask_admin_email()/,
+        "\"#{vault[:seafile_admin]}\"")
+				fe.search_file_replace_line(/ask_admin_password()/,
+	        "\"#{vault[:seafile_pass]}\"")
+      fe.write_file
+    end
+		only_if { File.exists?("#{node[:seafile][:path]}/seafile-server-latest/check_init_admin.py") }
+
 		action :nothing
   end
 
