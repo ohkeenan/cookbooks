@@ -68,17 +68,6 @@ template '/etc/init.d/seafile-server' do
   mode '0755'
 end
 
-# template '/etc/nginx/conf.d/seafile.conf' do
-#     if node['seafile']['use_ssl']
-#   source 'nginx_ssl_seafile.conf.erb'
-#     else
-#   source 'nginx_seafile.conf.erb'
-#     end
-#   owner 'root'
-#   group 'root'
-#   mode '0644'
-# end
-
 if node['seafile']['use_vault']
   vault = chef_vault_item(node[:seafile][:vault], node[:seafile][:vaultitem])
 

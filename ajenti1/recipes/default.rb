@@ -105,7 +105,8 @@ end
 
 template "/root/#{node.name}.json" do
   source 'ajenti_website.json.erb'
-	variables( {:domain => vault[:domain]})
+	variables(:domain => vault[:domain],
+							:root_dir => "#{node['ajenti1']['website_root']}#{vault[:domain]}")
   notifies :run, 'execute[ajenti_ipc_import_website]', :delayed
 	not_if { File.exist?("/etc/nginx/conf.d/#{node.name}.conf" )}
 end

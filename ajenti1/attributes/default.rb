@@ -9,8 +9,11 @@
 # default['ajenti1']['version'] = ''
 # default['ajenti1']['arch'] = 'x86-64'
 #
-# default['ajenti1']['user'] = 'ajenti1'
+# default['ajenti1']['user'] = 'ajenti1' #?maybe necessary to set user for nginx/www-data user across multiple platforms
+
 default['ajenti1']['website_root'] = '/srv/'
+default['ajenti1']['website_ssl_key'] = '/etc/ssl/certs/nginx-selfsigned.key'
+default['ajenti1']['website_ssl_cert'] = '/etc/ssl/certs/nginx-selfsigned.pem'
 
 default['ajenti1']['seafile_subdomain'] = 'seafile'
 default['ajenti1']['seafile_root'] = '/srv/seafile'
